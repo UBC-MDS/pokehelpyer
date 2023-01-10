@@ -2,7 +2,7 @@
 name = "pokehelpyer"
 version = "0.1.0"
 description = "Assists in building teams of various pokemon types based on weaknesses and resistances"
-authors = ["Sneha Sunil"]
+authors = ["Sneha Sunil, Jakob Thoms, Ritisha Sharma, Raul Aguilar"]
 license = "MIT"
 readme = "README.md"
 
