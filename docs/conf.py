@@ -7,8 +7,8 @@
 # -- Project information -----------------------------------------------------
 
 project = u"pokehelpyer"
-copyright = u"2023, Sneha Sunil"
-author = u"Sneha Sunil"
+copyright = u"2023, Sneha Sunil, Jakob Thoms, Ritisha Sharma, Raul Aguilar"
+author = u"Sneha Sunil, Jakob Thoms, Ritisha Sharma, Raul Aguilar"
 
 # -- General configuration ---------------------------------------------------
 
