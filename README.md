@@ -18,7 +18,7 @@ Interested in contributing? Check out the contributing guidelines. Please note t
 
 ## License
 
-`pokehelpyer` was created by Sneha Sunil. It is licensed under the terms of the MIT license.
+`pokehelpyer` was created by Sneha Sunil, Jakob Thoms, Ritisha Sharma, Raul Aguilar. It is licensed under the terms of the MIT license.
 
 ## Credits
 
