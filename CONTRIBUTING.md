@@ -69,8 +69,8 @@ Before you submit a pull request, check that it meets these guidelines:
 
 ## Code of Conduct
 
-Please note that the `pokehelpyer` project is released with a
-Code of Conduct. By contributing to this project you agree to abide by its terms.
+The `pokehelpyer` project is released using
+[Code of Conduct](https://github.com/UBC-MDS/pokehelpyer/blob/contributing/CONDUCT.md). By contributing to this project you agree to abide by its terms.
 
 ## Attribution
 The contributing guidelines were adapted from [cookiecutter contributing guidelines](https://github.com/cookiecutter/cookiecutter/blob/main/CONTRIBUTING.md).
