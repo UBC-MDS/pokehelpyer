@@ -1,6 +1,29 @@
 # pokehelpyer
 
-Assists in building teams of various pokemon types based on weaknesses and resistances
+The Python package, pokehelpyer, assists Pokemon players in building teams of various pokemon types based on weaknesses and resistances Using the five names of Pokemons provided by the user, pokehelpyer recommends the sixth player that would be best suited according to the types of the Pokemons present in the current team. It bases this recommendation on the calculations of weaknesses and resistances to make a team less susceptible to a certain weakness. 
+
+## Contributors
+- Raul Aguilar
+- Jakob Thoms
+- Ritisha Sharma
+- Sneha Sunil
+
+## Functions Included
+- `add_team_members`: Given a list of names of Pokemons provided by the user, it finds the corresponding types from a dataset present in the project. 
+
+- `calc_resistance`: Given a list of Pokemon types (based on the team provided by the user), calculates all the Pokemon types to which the team provided is resistant to. It uses a pokemon-chart dataset for details on the resistances.
+
+- `calc_weakness`: Given a list of Pokemon types, calculates the total number of typesfrom the team list (based on the team provided by the user), which is weak against each of the pokemon type in the game. It uses a pokemon-chart dataset for details on the resistances.
+
+- `recommend`: Using the calculations of weaknesses and strengths, it identifies the weak spots on the team and recommends the sixth team member.
+
+## Datasets Included
+
+- [pokemon.csv](https://gist.github.com/armgilles/194bcff35001e7eb53a2a8b441e8b2c6): Dataset containing details about each Pokemon including its type.
+- [chart.csv](https://github.com/zonination/pokemon-chart/blob/master/chart.csv): Dataset containing details abouts the weaknesses and strengths of each type of Pokemon.
+
+## Place in the Python Ecosystem
+There are websites and applications that help build Pokemon teams. There doesn't seem to be any Python packages that perform this operation. 
 
 ## Installation
 
