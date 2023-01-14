@@ -1,6 +1,12 @@
 # pokehelpyer
 
-Assists in building teams of various pokemon types based on weaknesses and resistances
+The Python package, pokehelpyer, assists Pokemon players in building teams of various pokemon types based on weaknesses and resistances Using the five names of Pokemons provided by the user, pokehelpyer recommends the sixth player that would be best suited according to the types of the Pokemons present in the current team. It bases this recommendation on the calculations of weaknesses and resistances to make a team less susceptible to a certain weakness. 
+
+## Contributors
+- Raul Aguilar
+- Jakob Thoms
+- Ritisha Sharma
+- Sneha Sunil
 
 ## Installation
 
