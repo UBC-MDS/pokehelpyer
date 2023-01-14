@@ -8,6 +8,16 @@ The Python package, pokehelpyer, assists Pokemon players in building teams of va
 - Ritisha Sharma
 - Sneha Sunil
 
+## Functions Included
+- `add_team_members`: Given a list of names of Pokemons provided by the user, it finds the corresponding types from a dataset present in the project. 
+
+- `calc_resistance`: Given a list of Pokemon types (based on the team provided by the user), calculates all the Pokemon types to which the team provided is resistant to. It uses a pokemon-chart dataset for details on the resistances.
+
+- `calc_weakness`: Given a list of Pokemon types, calculates the total number of typesfrom the team list (based on the team provided by the user), which is weak against each of the pokemon type in the game. It uses a pokemon-chart dataset for details on the resistances.
+
+- `recommend`: Using the calculations of weaknesses and strengths, it identifies the weak spots on the team and recommends the sixth team member.
+
+
 ## Installation
 
 ```bash
