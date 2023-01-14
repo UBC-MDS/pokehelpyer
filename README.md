@@ -22,7 +22,8 @@ The Python package, pokehelpyer, assists Pokemon players in building teams of va
 - [pokemon.csv](https://gist.github.com/armgilles/194bcff35001e7eb53a2a8b441e8b2c6): Dataset containing details about each Pokemon including its type.
 - [chart.csv](https://github.com/zonination/pokemon-chart/blob/master/chart.csv): Dataset containing details abouts the weaknesses and strengths of each type of Pokemon.
 
-
+## Place in the Python Ecosystem
+There are websites and applications that help build Pokemon teams. There doesn't seem to be any Python packages that perform this operation. 
 
 ## Installation
 
