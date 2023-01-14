@@ -4,10 +4,10 @@
 
 ## Development Team
 
-* [Sneha Sunil](https://github.com/___)>
+* [Sneha Sunil](https://github.com/snesunil)
 * [Jakob Thoms](https://github.com/j99thoms)
-* [Ritisha Sharma](https://github.com/___)
-* [Raul Aguilar](<https://github.com/___>)
+* [Ritisha Sharma](https://github.com/ritisha2000)
+* [Raul Aguilar](https://github.com/AguilarRaul)
 
 ## Additional Contributors
 
