@@ -1,3 +1,25 @@
+def add_team_members(pokemon_names):
+    """
+    Given a list of names of Pokemons provided by the user, 
+    the corresponding types for those Pokemons are returned.
+
+    Parameters
+    ----------
+    pokemon_names : list
+        the list of Pokemon names currently in the user's team
+
+    Returns
+    -------
+    pokemon_types : list 
+        the list of type of each pokemon in the input list
+
+    Example
+    --------
+    >>> add_team_memebers(['Pikachu', 'Eevee', 'Charizard', ...]) 
+    ['Electric', 'Normal', 'Fire', ...]    
+    """
+    # Function code (Due to Milestone 2)
+
 def calc_resistance(team):
     """
     Given a list of Pokemon types (based on the team provided by the user), 
