@@ -24,25 +24,25 @@ def calc_resistance(team):
 
 def calc_weaknesses(team_list):
     """
-    Given a list of Pokemon types, calculates the total number of Pokemon types
-    from the team list (based on the team provided by the user) which is weak
-    against all types.
+    Given a list of Pokemon types, calculates the total number of types
+    from the team list (based on the team provided by the user), which is weak
+    against each of the pokemon type in the game.
 
     Parameters
     ----------
-    team : list
-        the list of Pokemon types associated to the user's team
+    team_list : list
+        the list of Pokemon types associated with the user's team
 
     Returns
     -------
     weaknesses : dictionary 
-        a dictionary containing all Pokemon types as keys, 
+        a dictionary containing all Pokemon types as keys 
         and the number of Pokemons weak against each type as values.
 
     Example
     --------
     >>> calc_weaknesses(['Ice', 'Grass']) 
-    {'Bug': 1, 'Fire': 2, 'Rock': 1, 'Grass': 0, 'Ice': 1, ...}
+    {'Bug': 1, 'Fire': 2, 'Rock': 1, 'Grass': 0, ...}
     
     """
 
