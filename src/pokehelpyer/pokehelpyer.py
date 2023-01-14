@@ -16,6 +16,8 @@ def calc_resistance(team):
 
     Example
     --------
-    calc_resistance([]) 
+    >>> calc_resistance(['Electric', 'Grass', 'Fighting', 'Poison', 'Ground']) 
+    {'Normal': 0, 'Fire': 0, 'Water': 1, 'Electric': 2, 'Grass': 2, 'Ice': 1, ...}
+    
     """
     # Function code (Due to Milestone 2)
