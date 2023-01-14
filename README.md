@@ -17,6 +17,12 @@ The Python package, pokehelpyer, assists Pokemon players in building teams of va
 
 - `recommend`: Using the calculations of weaknesses and strengths, it identifies the weak spots on the team and recommends the sixth team member.
 
+## Datasets Included
+
+- [pokemon.csv](https://gist.github.com/armgilles/194bcff35001e7eb53a2a8b441e8b2c6): Dataset containing details about each Pokemon including its type.
+- [chart.csv](https://github.com/zonination/pokemon-chart/blob/master/chart.csv): Dataset containing details abouts the weaknesses and strengths of each type of Pokemon.
+
+
 
 ## Installation
 
