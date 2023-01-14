@@ -1,4 +1,4 @@
-def add_team_memebers(pokemon_names):
+def add_team_members(pokemon_names):
     """
     Given a list of names of Pokemons provided by the user, 
     the corresponding types for those Pokemons are returned.
