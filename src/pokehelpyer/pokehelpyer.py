@@ -1,65 +1,79 @@
 def add_team_members(pokemon_names):
     """
-    Given a list of names of Pokemons provided by the user, 
-    the corresponding types for those Pokemons are returned.
+    Given a list of pokémon names, determine the types of 
+    those pokémon using an existing dataset.
 
     Parameters
     ----------
     pokemon_names : list
-        the list of Pokemon names currently in the user's team
+        list of pokémon names
 
     Returns
     -------
     pokemon_types : list 
-        the list of type of each pokemon in the input list
+        list of pokémon types corresponding to 
+        the pokémon names in the input list
 
     Example
     --------
     >>> add_team_memebers(['Pikachu', 'Eevee', 'Charizard', ...]) 
     ['Electric', 'Normal', 'Fire', ...]    
     """
-    # Function code (Due to Milestone 2)
+    # Function code (TBD in Milestone 2)
 
-def calc_resistance(team):
+def calc_resistance(team_list):
     """
-    Given a list of Pokemon types (based on the team provided by the user), 
-    calculates all the Pokemon types to which the team provided is resistant to.
-
-    Parameters
-    ----------
-    team : list
-        the list of Pokemon types associated to the user's team
-
-    Returns
-    -------
-    resistant : dictionary 
-        a dictionary containing all Pokemon types as keys, 
-        and the number of Pokemons resistant to each type as value.
-
-    Example
-    --------
-    >>> calc_resistance(['Electric', 'Grass', 'Fighting', 'Poison', 'Ground']) 
-    {'Normal': 0, 'Fire': 0, 'Water': 1, 'Electric': 2, 'Grass': 2, 'Ice': 1, ...}
+    Given a list of pokémon types, determine how many types in the list 
+    are resistant to each type in the game.
     
-    """
-    # Function code (Due to Milestone 2)
-
-def calc_weaknesses(team_list):
-    """
-    Given a list of Pokemon types, calculates the total number of types
-    from the team list (based on the team provided by the user), which is weak
-    against each of the pokemon type in the game.
+    Creates a dictionary in which the keys are each of the 18 types 
+    in the game, and the values are integers ranging 
+    from 0 to the length of the input list of types.
+    The values indicate the number of types in the 
+    input list that are resistant to each key (type). 
 
     Parameters
     ----------
     team_list : list
-        the list of Pokemon types associated with the user's team
+        the list of pokémon types associated to the user's team
+
+    Returns
+    -------
+    resistances : dictionary 
+        a dictionary containing all pokémon types as keys, 
+        and the number of types in the input list resistant to
+        each key (type) as values.
+
+    Example
+    --------
+    >>> calc_resistances(['Electric', 'Normal', 'Fire']) 
+    {'Normal': 0, 'Fire': 1, 'Water': 0, 'Steel': 2, ...}
+    
+    """
+    # Function code (TBD in Milestone 2)
+
+def calc_weaknesses(team_list):
+    """
+    Given a list of pokémon types, determine how many types in the list 
+    are weak to each type in the game.
+    
+    Creates a dictionary in which the keys are each of the 18 types 
+    in the game, and the values are integers ranging 
+    from 0 to the length of the input list of types.
+    The values indicate the number of types in the 
+    input list that are weak to each key (type). 
+
+    Parameters
+    ----------
+    team_list : list
+        the list of Pokemon types associated to the user's team
 
     Returns
     -------
     weaknesses : dictionary 
-        a dictionary containing all Pokemon types as keys 
-        and the number of Pokemons weak against each type as values.
+        a dictionary containing all pokémon types as keys, 
+        and the number of types in the input list resistant to
+        each key (type) as values.
 
     Example
     --------
