@@ -1,48 +1,76 @@
-# pokehelpyer
+# Contributing
 
-The Python package `pokehelpyer` assists Pokemon players in building teams of various pokemon types based on weaknesses and resistances Using the five names of Pokemons provided by the user, pokehelpyer recommends the sixth player that would be best suited according to the types of the Pokemons present in the current team. It bases this recommendation on the calculations of weaknesses and resistances to make a team less susceptible to a certain weakness. 
+Contributions are welcome, and they are greatly appreciated! Every little bit
+helps, and credit will always be given.
 
-## Contributors
-- Raul Aguilar
-- Jakob Thoms
-- Ritisha Sharma
-- Sneha Sunil
+## Types of Contributions
 
-## Functions Included
-- `add_team_members`: Given a list of names of Pokemons provided by the user, it finds the corresponding types from a dataset present in the project. 
+### Report Bugs
 
-- `calc_resistance`: Given a list of Pokemon types (based on the team provided by the user), calculates all the Pokemon types to which the team provided is resistant to. It uses a pokemon-chart dataset for details on the resistances.
+If you are reporting a bug, please include:
 
-- `calc_weakness`: Given a list of Pokemon types, calculates the total number of typesfrom the team list (based on the team provided by the user), which is weak against each of the pokemon type in the game. It uses a pokemon-chart dataset for details on the resistances.
+* Your operating system name and version.
+* Any details about your local setup that might be helpful in troubleshooting.
+* Detailed steps to reproduce the bug.
 
-- `recommend`: Using the calculations of weaknesses and strengths, it identifies the weak spots on the team and recommends the sixth team member.
+### Fix Bugs
 
-## Datasets Included
+Look through the GitHub issues for bugs. Anything tagged with "bug" and "help
+wanted" is open to whoever wants to implement it.
 
-- [pokemon.csv](https://gist.github.com/armgilles/194bcff35001e7eb53a2a8b441e8b2c6): Dataset containing details about each Pokemon including its type.
-- [chart.csv](https://github.com/zonination/pokemon-chart/blob/master/chart.csv): Dataset containing details abouts the weaknesses and strengths of each type of Pokemon.
+### Implement Features
 
-## Place in the Python Ecosystem
-There are websites and applications that help build Pokemon teams. There doesn't seem to be any Python packages that perform this operation. 
+Look through the GitHub issues for features. Anything tagged with "enhancement"
+and "help wanted" is open to whoever wants to implement it.
 
-## Installation
+### Write Documentation
 
-```bash
-$ pip install pokehelpyer
-```
+You can never have enough documentation! Please feel free to contribute to any
+part of the documentation, such as the official docs, docstrings, or even
+on the web in blog posts, articles, and such.
 
-## Usage
+### Submit Feedback
 
-- TODO
+If you are proposing a feature:
 
-## Contributing
+* Explain in detail how it would work.
+* Keep the scope as narrow as possible, to make it easier to implement.
+* Remember that this is a volunteer-driven project, and that contributions
+  are welcome :)
 
-Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a [Code of Conduct](https://github.com/UBC-MDS/pokehelpyer/blob/main/CONDUCT.md). By contributing to this project, you agree to abide by its terms.
+## Get Started!
 
-## License
+Ready to contribute? Here's how to set up `pokehelpyer` for local development.
 
-`pokehelpyer` was created by Sneha Sunil, Jakob Thoms, Ritisha Sharma, Raul Aguilar. It is licensed under the terms of the MIT license.
+1. Download a copy of `pokehelpyer` locally.
+2. Install `pokehelpyer` using `poetry`:
 
-## Credits
+    ```console
+    $ poetry install
+    ```
 
-`pokehelpyer` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
+3. Use `git` (or similar) to create a branch for local development and make your changes:
+
+    ```console
+    $ git checkout -b name-of-your-bugfix-or-feature
+    ```
+
+4. When you're done making changes, check that your changes conform to any code formatting requirements and pass any tests.
+
+5. Commit your changes and open a pull request.
+
+## Pull Request Guidelines
+
+Before you submit a pull request, check that it meets these guidelines:
+
+1. The pull request should include additional tests if appropriate.
+2. If the pull request adds functionality, the docs should be updated.
+3. The pull request should work for all currently supported operating systems and versions of Python.
+
+## Code of Conduct
+
+The `pokehelpyer` project is released using
+[Code of Conduct](https://github.com/UBC-MDS/pokehelpyer/blob/main/CONDUCT.md). By contributing to this project you agree to abide by its terms.
+
+## Attribution
+The contributing guidelines were adapted from [cookiecutter contributing guidelines](https://github.com/cookiecutter/cookiecutter/blob/main/CONTRIBUTING.md).
