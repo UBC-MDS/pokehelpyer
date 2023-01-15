@@ -83,3 +83,35 @@ def calc_weaknesses(team_list):
     """
 
     # Function code (TBD in Milestone 2)
+
+def recommend(current_team):
+    """
+    Given a team of up to 5 pokémon, recommend a 
+    pokémon that could be added to the 
+    current team to make its weaknesses and 
+    resistances more balanced.
+
+    This function first determines which types the 
+    team is most weak to and which types the team is 
+    most resistant to via `calc_resistances` and 
+    `calc_weaknesses`, and then makes its recommendation 
+    based on this information.
+
+    Parameters
+    ----------
+    current_team : list
+        list of up to 5 pokémon names
+
+    Returns
+    -------
+    reccomendation : string 
+        the name of a pokémon that could be added to the input 
+        team to make its weaknesses and resistances more balanced.
+
+    Example
+    --------
+    >>> recommend(['Pikachu', 'Eevee', 'Charizard', ...]) 
+    "Lucario"  
+    """
+    # Function code (TBD in Milestone 2)
+    
