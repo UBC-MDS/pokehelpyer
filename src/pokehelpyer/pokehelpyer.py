@@ -1,23 +1,23 @@
-def add_team_members(pokemon_names):
+def get_types(pokemon_names):
     """
     Given a list of pokémon names, determine the types of 
     those pokémon using an existing dataset.
 
     Parameters
     ----------
-    pokemon_names : list
+    pokemon_names : list of strings
         list of pokémon names
 
     Returns
     -------
-    pokemon_types : list 
-        list of pokémon types corresponding to 
+    pokemon_types : list of lists of strings
+        list of lists of pokémon types corresponding to 
         the pokémon names in the input list
 
     Example
     --------
-    >>> add_team_memebers(['Pikachu', 'Eevee', 'Charizard', ...]) 
-    ['Electric', 'Normal', 'Fire', ...]    
+    >>> get_types(['Pikachu', 'Eevee', 'Charizard', ...]) 
+    [['Electric'], ['Normal'], ['Fire', 'Flying'], ...]    
     """
     # Function code (TBD in Milestone 2)
 
