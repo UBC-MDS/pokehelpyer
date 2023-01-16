@@ -121,3 +121,37 @@ def recommend(current_team):
     """
     # Function code (TBD in Milestone 2)
     
+    # Basic outline:
+        
+    team_types = get_types(current_team)
+    current_resistances = calc_resistances(team_types)
+    current_weaknesses = calc_weaknesses(team_types)
+    
+    current_balance = calc_balance(current_resistances, current_weaknesses)
+    best_balance = current_balance
+
+    pokemon_df = pd.read_csv('data/pokemon.csv')
+
+
+    # for each new_pokemon in pokemon_df:
+        # get the type(s) `new_pokemon`, call it `pkmn_type`
+        pkmn_resistances = calc_resistances(pkmn_type)
+        pkmn_weaknesses = calc_weaknesses(pkmn_type)
+
+        # add the new pokemon's resistances to the current team's resistances
+        new_resistances = defaultdict(int)
+        for d in (current_resistances, new_resistances):
+            for type, val in d.items():
+                new_resistances[type] += val
+
+        # add the new pokemon's weaknesses to the current team's weaknesses
+        new_weaknesses = defaultdict(int)
+        for d in (current_weaknesses, new_weaknesses):
+            for type, val in d.items():
+                new_weaknesses[type] += val
+
+        new_balance = calc_balance(new_resistances, new_weaknesses)
+        if new_balance > best_balance:
+            recommendation = new_pokemon
+
+    return recommendation
