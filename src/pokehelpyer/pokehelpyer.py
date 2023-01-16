@@ -155,3 +155,31 @@ def recommend(current_team):
             recommendation = new_pokemon
 
     return recommendation
+
+def calc_balance(resistances, weaknesses):
+    """
+    Calculate a measure of how balanced a team is using its 
+    weaknesses and resistances.
+
+    Higher values indicate a more balanced team.
+
+    Parameters
+    ----------
+    resistances : dictionary
+        obtained from calc_resistances
+
+    weaknesses : dictionary
+        obtained from calc_weaknesses
+
+    Returns
+    -------
+    balance : float 
+        measure of how balanced the team is.
+
+    Example
+    --------
+    TO-DO
+    """
+
+    # Code TBD
+    
