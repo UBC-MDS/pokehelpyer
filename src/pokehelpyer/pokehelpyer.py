@@ -21,33 +21,36 @@ def get_types(pokemon_names):
     """
     # Function code (TBD in Milestone 2)
 
-def calc_resistance(team_list):
+def calc_resistances(team_types):
     """
-    Given a list of pokémon types, determine how many types in the list 
-    are resistant to each type in the game.
+    Given a list of pokémon types present on a player's team,
+    calculate a measure of how resistant the team is to each type in the game.
     
     Creates a dictionary in which the keys are each of the 18 types 
-    in the game, and the values are integers ranging 
-    from 0 to the length of the input list of types.
-    The values indicate the number of types in the 
-    input list that are resistant to each key (type). 
+    in the game, and the values are integers measuring the level of 
+    resistance the input team has to that type. Higher values indicate a
+    higher level of resistance to that type (key).
 
     Parameters
     ----------
-    team_list : list
-        the list of pokémon types associated to the user's team
+    team_types : list of list of strings
+        list of pokémon types associated to the user's team
+        obtained via `get_types`
 
     Returns
     -------
     resistances : dictionary 
-        a dictionary containing all pokémon types as keys, 
-        and the number of types in the input list resistant to
-        each key (type) as values.
+        a dictionary containing all 18 pokémon types as keys, 
+        and integers measuring the level of resistance the input team
+        has to that type as values. 
 
-    Example
+    Examples
     --------
-    >>> calc_resistances(['Electric', 'Normal', 'Fire']) 
-    {'Normal': 0, 'Fire': 1, 'Water': 0, 'Steel': 2, ...}
+    >>> calc_resistances([['Electric'], ['Normal'], ['Fire', 'Flying']) 
+    {'Normal': 0, 'Fire': 1, 'Water': 0, 'Grass': 2, 'Electric': 1, ...}
+
+    >>> calc_resistances([['Steel', 'Flying']) 
+    {'Normal': 1, 'Fire': 0, 'Water': 0, 'Grass': 2, 'Electric': 0, ...}
     
     """
     # Function code (TBD in Milestone 2)
