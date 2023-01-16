@@ -105,7 +105,7 @@ def recommend(current_team):
 
     Parameters
     ----------
-    current_team : list
+    current_team : list of strings
         list of up to 5 pokémon names
 
     Returns
