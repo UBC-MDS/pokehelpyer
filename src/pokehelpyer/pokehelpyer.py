@@ -49,39 +49,42 @@ def calc_resistances(team_types):
     >>> calc_resistances([['Electric'], ['Normal'], ['Fire', 'Flying']) 
     {'Normal': 0, 'Fire': 1, 'Water': 0, 'Grass': 2, 'Electric': 1, ...}
 
-    >>> calc_resistances([['Steel', 'Flying']) 
+    >>> calc_resistances([['Steel', 'Flying']) # Skarmory is doubly resistant to Grass
     {'Normal': 1, 'Fire': 0, 'Water': 0, 'Grass': 2, 'Electric': 0, ...}
     
     """
     # Function code (TBD in Milestone 2)
 
-def calc_weaknesses(team_list):
+def calc_weaknesses(team_types):
     """
-    Given a list of pokémon types, determine how many types in the list 
-    are weak to each type in the game.
+    Given a list of pokémon types present on a player's team,
+    calculate a measure of how weak the team is to each type in the game.
     
     Creates a dictionary in which the keys are each of the 18 types 
-    in the game, and the values are integers ranging 
-    from 0 to the length of the input list of types.
-    The values indicate the number of types in the 
-    input list that are weak to each key (type). 
+    in the game, and the values are integers measuring the level of 
+    weakness the input team has to that key (type). Higher values indicate a
+    higher level of weakness to that type. 
 
     Parameters
     ----------
-    team_list : list
-        the list of Pokemon types associated to the user's team
+    team_types : list of list of strings
+        list of pokémon types associated to the user's team
+        obtained via `get_types`
 
     Returns
     -------
     weaknesses : dictionary 
-        a dictionary containing all pokémon types as keys, 
-        and the number of types in the input list resistant to
-        each key (type) as values.
+        a dictionary containing all 18 pokémon types as keys, 
+        and integers measuring the level of weakness the input team
+        has to that type as values. 
 
-    Example
+    Examples
     --------
-    >>> calc_weaknesses(['Ice', 'Grass']) 
-    {'Bug': 1, 'Fire': 2, 'Rock': 1, 'Grass': 0, ...}
+    >>> calc_weaknesses([['Electric'], ['Normal'], ['Fire', 'Flying']) 
+    {'Normal': 0, 'Fire': 0, 'Water': 1, 'Grass': 0, 'Electric': 1, ...}
+
+    >>> calc_weaknesses([['Ice', 'Grass']) # Abomasnow is doubly weak to Fire
+    {'Normal': 0, 'Fire': 2, 'Water': 0, 'Grass': 0, 'Electric': 0, ...}
     
     """
 
