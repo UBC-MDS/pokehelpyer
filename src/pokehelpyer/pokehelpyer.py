@@ -1,84 +1,90 @@
-def add_team_members(pokemon_names):
+def get_types(pokemon_names):
     """
     Given a list of pokémon names, determine the types of 
     those pokémon using an existing dataset.
 
     Parameters
     ----------
-    pokemon_names : list
+    pokemon_names : list of strings
         list of pokémon names
 
     Returns
     -------
-    pokemon_types : list 
-        list of pokémon types corresponding to 
+    pokemon_types : list of lists of strings
+        list of lists of pokémon types corresponding to 
         the pokémon names in the input list
 
     Example
     --------
-    >>> add_team_memebers(['Pikachu', 'Eevee', 'Charizard', ...]) 
-    ['Electric', 'Normal', 'Fire', ...]    
+    >>> get_types(['Pikachu', 'Eevee', 'Charizard', ...]) 
+    [['Electric'], ['Normal'], ['Fire', 'Flying'], ...]    
     """
     # Function code (TBD in Milestone 2)
 
-def calc_resistance(team_list):
+def calc_resistances(team_types):
     """
-    Given a list of pokémon types, determine how many types in the list 
-    are resistant to each type in the game.
+    Given a list of pokémon types present on a player's team,
+    calculate a measure of how resistant the team is to each type in the game.
     
     Creates a dictionary in which the keys are each of the 18 types 
-    in the game, and the values are integers ranging 
-    from 0 to the length of the input list of types.
-    The values indicate the number of types in the 
-    input list that are resistant to each key (type). 
+    in the game, and the values are integers measuring the level of 
+    resistance the input team has to that type. Higher values indicate a
+    higher level of resistance to that type (key).
 
     Parameters
     ----------
-    team_list : list
-        the list of pokémon types associated to the user's team
+    team_types : list of list of strings
+        list of pokémon types associated to the user's team
+        obtained via `get_types`
 
     Returns
     -------
     resistances : dictionary 
-        a dictionary containing all pokémon types as keys, 
-        and the number of types in the input list resistant to
-        each key (type) as values.
+        a dictionary containing all 18 pokémon types as keys, 
+        and integers measuring the level of resistance the input team
+        has to that type as values. 
 
-    Example
+    Examples
     --------
-    >>> calc_resistances(['Electric', 'Normal', 'Fire']) 
-    {'Normal': 0, 'Fire': 1, 'Water': 0, 'Steel': 2, ...}
+    >>> calc_resistances([['Electric'], ['Normal'], ['Fire', 'Flying']) 
+    {'Normal': 0, 'Fire': 1, 'Water': 0, 'Grass': 2, 'Electric': 1, ...}
+
+    >>> calc_resistances([['Steel', 'Flying']) # Skarmory is doubly resistant to Grass
+    {'Normal': 1, 'Fire': 0, 'Water': 0, 'Grass': 2, 'Electric': 0, ...}
     
     """
     # Function code (TBD in Milestone 2)
 
-def calc_weaknesses(team_list):
+def calc_weaknesses(team_types):
     """
-    Given a list of pokémon types, determine how many types in the list 
-    are weak to each type in the game.
+    Given a list of pokémon types present on a player's team,
+    calculate a measure of how weak the team is to each type in the game.
     
     Creates a dictionary in which the keys are each of the 18 types 
-    in the game, and the values are integers ranging 
-    from 0 to the length of the input list of types.
-    The values indicate the number of types in the 
-    input list that are weak to each key (type). 
+    in the game, and the values are integers measuring the level of 
+    weakness the input team has to that key (type). Higher values indicate a
+    higher level of weakness to that type. 
 
     Parameters
     ----------
-    team_list : list
-        the list of Pokemon types associated to the user's team
+    team_types : list of list of strings
+        list of pokémon types associated to the user's team
+        obtained via `get_types`
 
     Returns
     -------
     weaknesses : dictionary 
-        a dictionary containing all pokémon types as keys, 
-        and the number of types in the input list resistant to
-        each key (type) as values.
+        a dictionary containing all 18 pokémon types as keys, 
+        and integers measuring the level of weakness the input team
+        has to that type as values. 
 
-    Example
+    Examples
     --------
-    >>> calc_weaknesses(['Ice', 'Grass']) 
-    {'Bug': 1, 'Fire': 2, 'Rock': 1, 'Grass': 0, ...}
+    >>> calc_weaknesses([['Electric'], ['Normal'], ['Fire', 'Flying']) 
+    {'Normal': 0, 'Fire': 0, 'Water': 1, 'Grass': 0, 'Electric': 1, ...}
+
+    >>> calc_weaknesses([['Ice', 'Grass']) # Abomasnow is doubly weak to Fire
+    {'Normal': 0, 'Fire': 2, 'Water': 0, 'Grass': 0, 'Electric': 0, ...}
     
     """
 
@@ -99,7 +105,7 @@ def recommend(current_team):
 
     Parameters
     ----------
-    current_team : list
+    current_team : list of strings
         list of up to 5 pokémon names
 
     Returns
@@ -114,4 +120,66 @@ def recommend(current_team):
     "Lucario"  
     """
     # Function code (TBD in Milestone 2)
+    
+    # Basic outline:
+        
+    team_types = get_types(current_team)
+    current_resistances = calc_resistances(team_types)
+    current_weaknesses = calc_weaknesses(team_types)
+    
+    current_balance = calc_balance(current_resistances, current_weaknesses)
+    best_balance = current_balance
+
+    pokemon_df = pd.read_csv('data/pokemon.csv')
+
+
+    # for each new_pokemon in pokemon_df:
+        # get the type(s) `new_pokemon`, call it `pkmn_type`
+        pkmn_resistances = calc_resistances(pkmn_type)
+        pkmn_weaknesses = calc_weaknesses(pkmn_type)
+
+        # add the new pokemon's resistances to the current team's resistances
+        new_resistances = defaultdict(int)
+        for d in (current_resistances, new_resistances):
+            for type, val in d.items():
+                new_resistances[type] += val
+
+        # add the new pokemon's weaknesses to the current team's weaknesses
+        new_weaknesses = defaultdict(int)
+        for d in (current_weaknesses, new_weaknesses):
+            for type, val in d.items():
+                new_weaknesses[type] += val
+
+        new_balance = calc_balance(new_resistances, new_weaknesses)
+        if new_balance > best_balance:
+            recommendation = new_pokemon
+
+    return recommendation
+
+def calc_balance(resistances, weaknesses):
+    """
+    Calculate a measure of how balanced a team is using its 
+    weaknesses and resistances.
+
+    Higher values indicate a more balanced team.
+
+    Parameters
+    ----------
+    resistances : dictionary
+        obtained from calc_resistances
+
+    weaknesses : dictionary
+        obtained from calc_weaknesses
+
+    Returns
+    -------
+    balance : float 
+        measure of how balanced the team is.
+
+    Example
+    --------
+    TO-DO
+    """
+
+    # Code TBD
     
