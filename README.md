@@ -21,7 +21,7 @@ The `pokehelpyer` package aims to assist players in avoiding imbalances in weakn
 ## Datasets Included
 
 - [pokémon.csv](https://gist.github.com/armgilles/194bcff35001e7eb53a2a8b441e8b2c6): Dataset containing details about each pokémon including its type.
-- [chart.csv](https://github.com/zonination/pokémon-chart/blob/master/chart.csv): Dataset containing details abouts the weaknesses and strengths of each type of pokémon.
+- [chart.csv](https://github.com/zonination/pokemon-chart/blob/master/chart.csv): Dataset containing details abouts the weaknesses and strengths of each type of pokémon.
 
 ## Place in the Python Ecosystem
 There are websites and applications that help build pokémon teams, such as the [Mariland Team Builder](https://marriland.com/tools/team-builder/en/). However these tools simply present the player with a visual representation of their current team's weaknesses and resistances. They don't make recommendations. In other words, the existing tools simply given visual representations of the dictionaries created by `calc_weaknesses` and `calc_resistances`. There doesn't seem to be any existing Python packages which will use the weaknesses/resistances data to make reccomendations for additional team members.
@@ -44,7 +44,7 @@ $ pip install pokehelpyer
 
 ## Contributing
 
-Interested in contributing? Check out the [contributing guidelines](https://github.com/UBC-MDS/pokehelpyer/blob/main/CONTRIBUTING.md). Please note that this project is released with a [Code of Conduct](https://github.com/UBC-MDS/pokehelpyer/blob/contributing/CONDUCT.md). By contributing to this project, you agree to abide by its terms.
+Interested in contributing? Check out the [contributing guidelines](https://github.com/UBC-MDS/pokehelpyer/blob/main/CONTRIBUTING.md). Please note that this project is released with a [Code of Conduct](https://github.com/UBC-MDS/pokehelpyer/blob/main/CONDUCT.md). By contributing to this project, you agree to abide by its terms.
 
 ## License
 
