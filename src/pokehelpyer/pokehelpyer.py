@@ -2,6 +2,7 @@ import pandas as pd
 import itertools
 import re 
 
+
 def get_types(pokemon_names):
     """
     Given a list of pokémon names, determine the types of 
@@ -226,41 +227,40 @@ def recommend(current_team):
     --------
     >>> recommend(['Pikachu', 'Eevee', 'Charizard', ...]) 
     "Lucario"  
-    """
-    # Function code (TBD in Milestone 2)
-    
-    # Basic outline:
-        
+    """        
     team_types = get_types(current_team)
     current_resistances = calc_resistances(team_types)
     current_weaknesses = calc_weaknesses(team_types)
     
-    current_balance = calc_balance(current_resistances, current_weaknesses)
-    best_balance = current_balance
+    all_types = pd.read_csv('data/type_chart.csv')['Attacking'].tolist()
+    type_combos = [set(types) for types in itertools.combinations(all_types, 2)]
+    new_balance_dict = dict()
 
-    pokemon_df = pd.read_csv('data/pokemon.csv')
+    # Loop through all posible types of pokemon that could be added to the team
+    for type_combo in type_combos:
+        type_combo_resistances = calc_resistances([type_combo])
+        type_combo_weaknesses = calc_weaknesses([type_combo])
 
-
-    # for each new_pokemon in pokemon_df:
-        # get the type(s) `new_pokemon`, call it `pkmn_type`
-        pkmn_resistances = calc_resistances(pkmn_type)
-        pkmn_weaknesses = calc_weaknesses(pkmn_type)
-
-        # add the new pokemon's resistances to the current team's resistances
+        # add the pokemon's resistances to the current team's resistances
         new_resistances = defaultdict(int)
-        for d in (current_resistances, new_resistances):
-            for type, val in d.items():
+        for dict in (current_resistances, new_resistances):
+            for type, val in dict.items():
                 new_resistances[type] += val
 
         # add the new pokemon's weaknesses to the current team's weaknesses
         new_weaknesses = defaultdict(int)
-        for d in (current_weaknesses, new_weaknesses):
-            for type, val in d.items():
+        for dict in (current_weaknesses, new_weaknesses):
+            for type, val in dict.items():
                 new_weaknesses[type] += val
 
         new_balance = calc_balance(new_resistances, new_weaknesses)
-        if new_balance > best_balance:
-            recommendation = new_pokemon
+        new_balance_dict[type_combo] = new_balance
+
+    new_balance_df = pd.DataFrame(new_balance_dict, index=['balance']).T.\
+        sort_values(by='balance', ascending=False)
+
+    best_type_combo = new_balance_df.iloc[0, :].name
+
 
     return recommendation
 
