@@ -1,3 +1,6 @@
+import pandas as pd
+import re 
+
 def get_types(pokemon_names):
     """
     Given a list of pokémon names, determine the types of 
@@ -19,7 +22,38 @@ def get_types(pokemon_names):
     >>> get_types(['Pikachu', 'Eevee', 'Charizard', ...]) 
     [['Electric'], ['Normal'], ['Fire', 'Flying'], ...]    
     """
-    # Function code (TBD in Milestone 2)
+    # Read file with Pokemon names and types
+    url = "https://gist.githubusercontent.com/armgilles/194bcff35001e7eb53a2a8b441e8b2c6/raw/92200bc0a673d5ce2110aaad4544ed6c4010f687/pokemon.csv"
+    # Keep only relevant subset of the data
+    names_types_df = pd.read_csv(url)[["Name", "Type 1", "Type 2"]]
+
+    # Clean string column "Name"
+    names_types_df["Name"] = names_types_df["Name"].str.strip()
+    names_types_df["Name"] = names_types_df["Name"].str.lower()
+    # Some of the names in dataset contain symbols
+    name_with_symbol = names_types_df[names_types_df["Name"].str.match(".*[^\w\s].*")]["Name"].tolist()
+    
+    poke_types = []
+    for name in pokemon_names:
+        # Clean string
+        name = name.strip()
+        name = name.lower()
+        # Check if name is supposed to contain symbol, otherwise remove
+        if name not in name_with_symbol:
+            name = re.sub(r"[^\w\s]", "", name)
+                
+        # Check if exists in data
+        assert name not in names_types_df["Name"], "Pokemon is not valid"
+        
+        # Find the row with match
+        row = names_types_df.loc[names_types_df["Name"] == name].values[0]
+        # Type 2 is optional
+        if pd.isna(row[2]):
+            poke_types.append([row[1]])
+        else:
+            poke_types.append([row[1], row[2]])
+            
+    return poke_types
 
 def calc_resistances(team_types):
     """
