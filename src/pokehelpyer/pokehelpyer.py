@@ -1,3 +1,5 @@
+import pandas as pd
+
 def get_types(pokemon_names):
     """
     Given a list of pokémon names, determine the types of 
@@ -87,74 +89,108 @@ def calc_weaknesses(team_types):
     {'Normal': 0, 'Fire': 2, 'Water': 0, 'Grass': 0, 'Electric': 0, ...}
     
     """
+    #team_types = [['Fire'], ['Steel', 'Flying'], ['Grass', 'Ice']]
+    if len(team_types) == 0:
+        return
 
-    # Function code (TBD in Milestone 2)
-
-def recommend(current_team):
-    """
-    Given a team of up to 5 pokémon, recommend a 
-    pokémon that could be added to the 
-    current team to make its weaknesses and 
-    resistances more balanced.
-
-    This function first determines which types the 
-    team is most weak to and which types the team is 
-    most resistant to via `calc_resistances` and 
-    `calc_weaknesses`, and then makes its recommendation 
-    based on this information.
-
-    Parameters
-    ----------
-    current_team : list of strings
-        list of up to 5 pokémon names
-
-    Returns
-    -------
-    reccomendation : string 
-        the name of a pokémon that could be added to the input 
-        team to make its weaknesses and resistances more balanced.
-
-    Example
-    --------
-    >>> recommend(['Pikachu', 'Eevee', 'Charizard', ...]) 
-    "Lucario"  
-    """
-    # Function code (TBD in Milestone 2)
+    try:
+        weakness_df = pd.read_csv("https://raw.githubusercontent.com/zonination/pokemon-chart/master/chart.csv", sep=',', index_col = 0)
+    except Exception as ex:
+        print("Exception occurred :" + ex)
+        return
     
-    # Basic outline:
+    if isinstance(weakness_df, pd.DataFrame):
+        all_types = weakness_df.index.tolist()
+        dict = {x: 0 for x in all_types}
+
+    if all_types:
+        for item in all_types:
+            weakness_counter = 0
+            for type in team_types:
+                if len(type) == 1:
+                    val1 = weakness_df.loc[item][type[0]]
+                    if(val1 == 2):
+                        weakness_counter = 1
+
+                elif len(type) == 2:
+                    type1 = type[0]
+                    type2 = type[1]
+                    val1 = weakness_df.loc[item][type1]
+                    val2 = weakness_df.loc[item][type2]
+
+                    if val1 == 2 and val2 == 2:
+                        weakness_counter += 2
+                    elif (val1 == 1 and val2 == 2) or (val1 == 2 and val2 == 1):
+                        weakness_counter += 1
+            
+            dict[item] = weakness_counter
+    return dict  
+
+# def recommend(current_team):
+#     """
+#     Given a team of up to 5 pokémon, recommend a 
+#     pokémon that could be added to the 
+#     current team to make its weaknesses and 
+#     resistances more balanced.
+
+#     This function first determines which types the 
+#     team is most weak to and which types the team is 
+#     most resistant to via `calc_resistances` and 
+#     `calc_weaknesses`, and then makes its recommendation 
+#     based on this information.
+
+#     Parameters
+#     ----------
+#     current_team : list of strings
+#         list of up to 5 pokémon names
+
+#     Returns
+#     -------
+#     reccomendation : string 
+#         the name of a pokémon that could be added to the input 
+#         team to make its weaknesses and resistances more balanced.
+
+#     Example
+#     --------
+#     >>> recommend(['Pikachu', 'Eevee', 'Charizard', ...]) 
+#     "Lucario"  
+#     """
+#     # Function code (TBD in Milestone 2)
+    
+#     # Basic outline:
         
-    team_types = get_types(current_team)
-    current_resistances = calc_resistances(team_types)
-    current_weaknesses = calc_weaknesses(team_types)
+#     team_types = get_types(current_team)
+#     current_resistances = calc_resistances(team_types)
+#     current_weaknesses = calc_weaknesses(team_types)
     
-    current_balance = calc_balance(current_resistances, current_weaknesses)
-    best_balance = current_balance
+#     current_balance = calc_balance(current_resistances, current_weaknesses)
+#     best_balance = current_balance
 
-    pokemon_df = pd.read_csv('data/pokemon.csv')
+#     pokemon_df = pd.read_csv('data/pokemon.csv')
 
 
-    # for each new_pokemon in pokemon_df:
-        # get the type(s) `new_pokemon`, call it `pkmn_type`
-        pkmn_resistances = calc_resistances(pkmn_type)
-        pkmn_weaknesses = calc_weaknesses(pkmn_type)
+#     # for each new_pokemon in pokemon_df:
+#         # get the type(s) `new_pokemon`, call it `pkmn_type`
+#         pkmn_resistances = calc_resistances(pkmn_type)
+#         pkmn_weaknesses = calc_weaknesses(pkmn_type)
 
-        # add the new pokemon's resistances to the current team's resistances
-        new_resistances = defaultdict(int)
-        for d in (current_resistances, new_resistances):
-            for type, val in d.items():
-                new_resistances[type] += val
+#         # add the new pokemon's resistances to the current team's resistances
+#         new_resistances = defaultdict(int)
+#         for d in (current_resistances, new_resistances):
+#             for type, val in d.items():
+#                 new_resistances[type] += val
 
-        # add the new pokemon's weaknesses to the current team's weaknesses
-        new_weaknesses = defaultdict(int)
-        for d in (current_weaknesses, new_weaknesses):
-            for type, val in d.items():
-                new_weaknesses[type] += val
+#         # add the new pokemon's weaknesses to the current team's weaknesses
+#         new_weaknesses = defaultdict(int)
+#         for d in (current_weaknesses, new_weaknesses):
+#             for type, val in d.items():
+#                 new_weaknesses[type] += val
 
-        new_balance = calc_balance(new_resistances, new_weaknesses)
-        if new_balance > best_balance:
-            recommendation = new_pokemon
+#         new_balance = calc_balance(new_resistances, new_weaknesses)
+#         if new_balance > best_balance:
+#             recommendation = new_pokemon
 
-    return recommendation
+#     return recommendation
 
 def calc_balance(resistances, weaknesses):
     """
