@@ -89,20 +89,23 @@ def calc_weaknesses(team_types):
     {'Normal': 0, 'Fire': 2, 'Water': 0, 'Grass': 0, 'Electric': 0, ...}
     
     """
-    #team_types = [['Fire'], ['Steel', 'Flying'], ['Grass', 'Ice']]
+    # Check if input list is empty
     if len(team_types) == 0:
         return
 
+    # Read the pokemon weakness dataframe using pandas
     try:
         weakness_df = pd.read_csv("https://raw.githubusercontent.com/zonination/pokemon-chart/master/chart.csv", sep=',', index_col = 0)
     except Exception as ex:
         print("Exception occurred :" + ex)
         return
     
+    # Check if the returned object is a dataframe and fetch all types of pokemon
     if isinstance(weakness_df, pd.DataFrame):
         all_types = weakness_df.index.tolist()
-        dict = {x: 0 for x in all_types}
+        weaknesses = {x: 0 for x in all_types}
 
+    # Calculate weaknesses of all types and add it to a dictionary
     if all_types:
         for item in all_types:
             weakness_counter = 0
@@ -123,8 +126,8 @@ def calc_weaknesses(team_types):
                     elif (val1 == 1 and val2 == 2) or (val1 == 2 and val2 == 1):
                         weakness_counter += 1
             
-            dict[item] = weakness_counter
-    return dict  
+            weaknesses[item] = weakness_counter
+    return weaknesses  
 
 # def recommend(current_team):
 #     """
