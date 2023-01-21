@@ -90,6 +90,9 @@ def calc_resistances(team_types):
     {'Normal': 1, 'Fire': 0, 'Water': 0, 'Grass': 2, 'Electric': 0, ...}
     
     """
+    url = "https://raw.githubusercontent.com/zonination/pokemon-chart/master/chart.csv"
+    resistances_df = pd.read_csv(url)
+    
     poke_types = ['Normal', 'Fire']
 
     resistances_dict = {value: 0 for value in resistances_df['Attacking'].values.tolist()}
@@ -110,8 +113,8 @@ def calc_resistances(team_types):
             if item in resistances_dict:
                 resistances_dict[item] += 4
     
-    
-resistances_dict
+    return resistances_dict
+
 
 def calc_weaknesses(team_types):
     """
