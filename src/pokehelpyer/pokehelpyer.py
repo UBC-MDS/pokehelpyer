@@ -90,7 +90,28 @@ def calc_resistances(team_types):
     {'Normal': 1, 'Fire': 0, 'Water': 0, 'Grass': 2, 'Electric': 0, ...}
     
     """
-    # Function code (TBD in Milestone 2)
+    poke_types = ['Normal', 'Fire']
+
+    resistances_dict = {value: 0 for value in resistances_df['Attacking'].values.tolist()}
+
+    for i in poke_types:
+
+        normal_resistance = resistances_df[['Attacking', i]].query(f'{i}==0.5') 
+        list_normal = normal_resistance['Attacking'].values.tolist()
+        
+        for item in list_normal:
+            if item in resistances_dict:
+                resistances_dict[item] += 1
+                
+        double_resistance = resistances_df[['Attacking', i]].query(f'{i}==0')
+        list_double = double_resistance['Attacking'].values.tolist()
+                
+        for item in list_double:
+            if item in resistances_dict:
+                resistances_dict[item] += 4
+    
+    
+resistances_dict
 
 def calc_weaknesses(team_types):
     """
