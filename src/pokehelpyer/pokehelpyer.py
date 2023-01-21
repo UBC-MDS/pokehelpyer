@@ -84,7 +84,7 @@ def calc_resistances(team_types):
 
     Examples
     --------
-    >>> calc_resistances([['Electric'], ['Normal'], ['Fire', 'Flying']) 
+    >>> calc_resistances([['Electric'], ['Normal'], ['Fire', 'Flying']]) 
     {'Normal': 0, 'Fire': 1, 'Water': 0, 'Grass': 2, 'Electric': 1, ...}
 
     >>> calc_resistances([['Steel', 'Flying']]) # Skarmory is doubly resistant to Grass
