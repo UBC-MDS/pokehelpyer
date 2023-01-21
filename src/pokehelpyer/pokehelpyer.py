@@ -1,4 +1,5 @@
 import pandas as pd
+import itertools
 import re 
 
 def get_types(pokemon_names):
@@ -83,14 +84,47 @@ def calc_resistances(team_types):
 
     Examples
     --------
-    >>> calc_resistances([['Electric'], ['Normal'], ['Fire', 'Flying']) 
+    >>> calc_resistances([['Electric'], ['Normal'], ['Fire', 'Flying']]) 
     {'Normal': 0, 'Fire': 1, 'Water': 0, 'Grass': 2, 'Electric': 1, ...}
 
-    >>> calc_resistances([['Steel', 'Flying']) # Skarmory is doubly resistant to Grass
+    >>> calc_resistances([['Steel', 'Flying']]) # Skarmory is doubly resistant to Grass
     {'Normal': 1, 'Fire': 0, 'Water': 0, 'Grass': 2, 'Electric': 0, ...}
     
     """
-    # Function code (TBD in Milestone 2)
+    # Check for empty input
+    assert len(team_types) != 0, "No types provided"
+
+    # Reads the file with Pokemon types, strengths and weaknesses
+    url = "https://raw.githubusercontent.com/zonination/pokemon-chart/master/chart.csv"
+
+    # Saves the data in Pandas data frame
+    resistances_df = pd.read_csv(url)
+
+    # Flattening list and creating dictionary with all Pokemon types
+    flat_types = list(itertools.chain.from_iterable(team_types))
+    resistances_dict = {value: 0 for value in resistances_df['Attacking'].values.tolist()}
+
+    # Iterates over all types in the team
+    for i in flat_types:
+
+        # Checks for type resistance and adds 1 to Pokemon type 
+        normal_resistance = resistances_df[['Attacking', i]].query(f'{i}==0.5') 
+        list_normal = normal_resistance['Attacking'].values.tolist()
+        
+        for item in list_normal:
+            if item in resistances_dict:
+                resistances_dict[item] += 1
+
+        # Checks for Pokemon immunity and adds 4 to Pokemon type        
+        double_resistance = resistances_df[['Attacking', i]].query(f'{i}==0')
+        list_double = double_resistance['Attacking'].values.tolist()
+                
+        for item in list_double:
+            if item in resistances_dict:
+                resistances_dict[item] += 4
+    
+    return resistances_dict
+
 
 def calc_weaknesses(team_types):
     """
