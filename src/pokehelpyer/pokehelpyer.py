@@ -123,9 +123,46 @@ def calc_weaknesses(team_types):
     >>> calc_weaknesses([['Ice', 'Grass']) # Abomasnow is doubly weak to Fire
     {'Normal': 0, 'Fire': 2, 'Water': 0, 'Grass': 0, 'Electric': 0, ...}
     
-    """
+    """    
+    # Check if input list is empty
+    if len(team_types) == 0:
+        return
 
-    # Function code (TBD in Milestone 2)
+    # Read the pokemon weakness dataframe using pandas
+    try:
+        weakness_df = pd.read_csv("https://raw.githubusercontent.com/zonination/pokemon-chart/master/chart.csv", sep=',', index_col = 0)
+    except Exception as ex:
+        print("Exception occurred :" + ex)
+        return
+    
+    # Check if the returned object is a dataframe and fetch all types of pokemon
+    if isinstance(weakness_df, pd.DataFrame):
+        all_types = weakness_df.index.tolist()
+        weaknesses = {x: 0 for x in all_types}
+
+    # Calculate weaknesses of all types and add it to a dictionary
+    if all_types:
+        for item in all_types:
+            weakness_counter = 0
+            for type in team_types:
+                if len(type) == 1:
+                    val1 = weakness_df.loc[item][type[0]]
+                    if(val1 == 2):
+                        weakness_counter = 1
+
+                elif len(type) == 2:
+                    type1 = type[0]
+                    type2 = type[1]
+                    val1 = weakness_df.loc[item][type1]
+                    val2 = weakness_df.loc[item][type2]
+
+                    if val1 == 2 and val2 == 2:
+                        weakness_counter += 2
+                    elif (val1 == 1 and val2 == 2) or (val1 == 2 and val2 == 1):
+                        weakness_counter += 1
+            
+            weaknesses[item] = weakness_counter
+    return weaknesses
 
 def recommend(current_team):
     """
@@ -160,38 +197,38 @@ def recommend(current_team):
     
     # Basic outline:
         
-    team_types = get_types(current_team)
-    current_resistances = calc_resistances(team_types)
-    current_weaknesses = calc_weaknesses(team_types)
+    # team_types = get_types(current_team)
+    # current_resistances = calc_resistances(team_types)
+    # current_weaknesses = calc_weaknesses(team_types)
     
-    current_balance = calc_balance(current_resistances, current_weaknesses)
-    best_balance = current_balance
+    # current_balance = calc_balance(current_resistances, current_weaknesses)
+    # best_balance = current_balance
 
-    pokemon_df = pd.read_csv('data/pokemon.csv')
+    # pokemon_df = pd.read_csv('data/pokemon.csv')
 
 
-    # for each new_pokemon in pokemon_df:
-        # get the type(s) `new_pokemon`, call it `pkmn_type`
-        pkmn_resistances = calc_resistances(pkmn_type)
-        pkmn_weaknesses = calc_weaknesses(pkmn_type)
+    # # for each new_pokemon in pokemon_df:
+    #     # get the type(s) `new_pokemon`, call it `pkmn_type`
+    #     pkmn_resistances = calc_resistances(pkmn_type)
+    #     pkmn_weaknesses = calc_weaknesses(pkmn_type)
 
-        # add the new pokemon's resistances to the current team's resistances
-        new_resistances = defaultdict(int)
-        for d in (current_resistances, new_resistances):
-            for type, val in d.items():
-                new_resistances[type] += val
+    #     # add the new pokemon's resistances to the current team's resistances
+    #     new_resistances = defaultdict(int)
+    #     for d in (current_resistances, new_resistances):
+    #         for type, val in d.items():
+    #             new_resistances[type] += val
 
-        # add the new pokemon's weaknesses to the current team's weaknesses
-        new_weaknesses = defaultdict(int)
-        for d in (current_weaknesses, new_weaknesses):
-            for type, val in d.items():
-                new_weaknesses[type] += val
+    #     # add the new pokemon's weaknesses to the current team's weaknesses
+    #     new_weaknesses = defaultdict(int)
+    #     for d in (current_weaknesses, new_weaknesses):
+    #         for type, val in d.items():
+    #             new_weaknesses[type] += val
 
-        new_balance = calc_balance(new_resistances, new_weaknesses)
-        if new_balance > best_balance:
-            recommendation = new_pokemon
+    #     new_balance = calc_balance(new_resistances, new_weaknesses)
+    #     if new_balance > best_balance:
+    #         recommendation = new_pokemon
 
-    return recommendation
+    # return recommendation
 
 def calc_balance(resistances, weaknesses):
     """
