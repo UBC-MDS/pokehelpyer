@@ -1,5 +1,6 @@
 import pandas as pd
 import itertools
+from collections import defaultdict
 import re 
 
 
@@ -232,14 +233,15 @@ def recommend(current_team):
     current_resistances = calc_resistances(team_types)
     current_weaknesses = calc_weaknesses(team_types)
     
-    all_types = pd.read_csv('data/type_chart.csv')['Attacking'].tolist()
-    type_combos = [set(types) for types in itertools.combinations(all_types, 2)]
+    pokemon_df = pd.read_csv('data/pokemon.csv')
     new_balance_dict = dict()
 
-    # Loop through all posible types of pokemon that could be added to the team
-    for type_combo in type_combos:
-        type_combo_resistances = calc_resistances([type_combo])
-        type_combo_weaknesses = calc_weaknesses([type_combo])
+    # Loop through all posible pokemon that could be added to the team
+    for pkmn in pokemon_df.rows:
+        pkmn_name = pkmn['Name']
+        pkmn_types = get_types(pkmn_name)
+        pkmn_resistances = calc_resistances(pkmn_types)
+        pkmn_weaknesses = calc_weaknesses(pkmn_types)
 
         # add the pokemon's resistances to the current team's resistances
         new_resistances = defaultdict(int)
@@ -254,15 +256,22 @@ def recommend(current_team):
                 new_weaknesses[type] += val
 
         new_balance = calc_balance(new_resistances, new_weaknesses)
-        new_balance_dict[type_combo] = new_balance
+        new_balance_dict[pkmn_name] = new_balance
 
     new_balance_df = pd.DataFrame(new_balance_dict, index=['balance']).T.\
-        sort_values(by='balance', ascending=False)
+        reset_index().rename(columns={'index': 'Name'})
 
-    best_type_combo = new_balance_df.iloc[0, :].name
+    results_df = new_balance_df.join(pokemon_df, on = 'Name').\
+        sort_values(by=['balance' 'Total'], ascending=False)
 
+    recommendations = []
+    for i in range(5):
+        recommendations.append(new_balance_df.iloc[0, :]['Name'])
+        current_best_balance = new_balance_df.iloc[0, :]['balance']
+        new_balance_df = new_balance_df.query("balance != @current_best_balance").\
+        sort_values(by=['balance' 'Total'], ascending=False)
 
-    return recommendation
+    return recommendations
 
 def calc_balance(resistances, weaknesses):
     """
