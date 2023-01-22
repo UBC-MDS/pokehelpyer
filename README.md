@@ -10,6 +10,7 @@ The `pokehelpyer` package aims to assist players in avoiding imbalances in weakn
 
 
 ## Functions Included
+
 - `get_types`: Given a list of pokémon names, determine the types of those pokémon using an existing dataset.
 <br>
 
@@ -46,6 +47,7 @@ The `pokehelpyer` package aims to assist players in avoiding imbalances in weakn
 
 - `calc_balance`: Calculate a measure of how balanced a pokémon team is using its
     weaknesses and resistances. Higher values indicate a more balanced team.
+
 ## Datasets Included
 
 - [pokémon.csv](https://github.com/UBC-MDS/pokehelpyer/blob/main/data/pokemon.csv): Dataset containing details about each pokémon including its name, type(s), and base stats.
