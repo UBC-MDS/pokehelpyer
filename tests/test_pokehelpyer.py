@@ -1,12 +1,22 @@
-from pokehelpyer.pokehelpyer import get_types
-from pokehelpyer.pokehelpyer import calc_weaknesses
-from pokehelpyer.pokehelpyer import calc_resistances
+from pokehelpyer.pokehelpyer import (
+    get_types, 
+    calc_weaknesses, 
+    calc_resistances, 
+    recommend,
+    calc_balance
+)
+
+
+# get_types:
 
 def test_get_types():
     """Test get_types function returns correct result for different inputs."""
     assert get_types(["RaICHu", "zubAt"]) == [["Electric"], ["Poison", "Flying"]], "Not able to handle improper capitalization"
     assert get_types(["Snorlax!!", "...Chingling"]) == [["Normal"], ["Psychic"]], "Not able to handle improper punctuation"
     assert get_types(["Mime Jr.", "Porygon-Z", "Nidoran♀"]) == [["Psychic", "Fairy"], ["Normal"], ["Poison"]], "Not able to handle Pokemon with symbol in the name"
+
+
+# calc_weaknesses:
 
 def test_calc_weaknesses_valid_result():
     """Tests the calculate weaknesses function for valid output/positive testcase"""
@@ -42,9 +52,22 @@ def test_calc_weaknesses_returns_empty_dict():
       'Dark': 0, 'Steel': 0, 'Fairy': 0}
     assert actual == expected
 
+
+# calc_resistances:
+
 def test_calc_resistances():
     """Test calc_resistances functionality."""
     assert sum(calc_resistances([["Normal"]]).values()) == 4, "Pokemon type does not add 4 points for immunity"
     assert calc_resistances([['Steel', 'Flying']])['Grass'] == 2, "Pokemon type does not add 2 points for double resistance"
     assert sum(calc_resistances([['Dark', 'Fairy']]).values()) == 13, "Combination of immunity, double resistance or single resistance not being calculated properly"
+
+
+# recommend:
+
+def test_recommend():
+    """Test `recommend` returns a string or list of strings."""
+    assert isinstance(recommend(['Pikachu']), str), "recommend with default arguments should return a string."
+    assert isinstance(recommend(['Pikachu'], n_recommendations=1), str), "recommend with n_recommendations=1 should return a string."
+    assert isinstance(recommend(['Pikachu'], n_recommendations=3), list), "recommend with n_recommendations > 1 should return a list of strings."
+    assert isinstance(recommend(['Pikachu'], n_recommendations=3)[0], str), "recommend with n_recommendations > 1 should return a list of strings."
     

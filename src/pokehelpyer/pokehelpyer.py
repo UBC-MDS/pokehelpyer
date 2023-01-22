@@ -243,16 +243,33 @@ def recommend(current_team, n_recommendations=1, include_legendaries=False, incl
     --------
     >>> recommend(['Pikachu', 'Eevee', 'Charizard', ...]) 
     "Lucario"  
-    """        
-    team_types = get_types(current_team)
-    current_resistances = calc_resistances(team_types)
-    current_weaknesses = calc_weaknesses(team_types)
-    
-    pokemon_df = pd.read_csv('data/pokemon.csv')
+    """
+    # Handle user input error in case of single-pokemon team        
+    if isinstance(pokemon_names, str):
+        pokemon_names = [pokemon_names]
+
+    # Check user input
+    assert isinstance(current_team, list), f"current_team should be a list of pokemon names."
+    assert len(current_team) > 0, "current_team should be a non-empty list of pokemon names."
+    assert isinstance(current_team[0], str), f"current_team should be a list of pokemon names."
+    assert isinstance(n_recommendations, int), f"n_recommendations should be an integer."
+    assert isinstance(include_legendaries, bool), f"include_legendaries should be a boolean value."
+    assert isinstance(include_megas, bool), f"include_megas should be a boolean value."
+    assert isinstance(verbose, bool), f"verbose should be a boolean value."
+
+    try:
+        pokemon_df = pd.read_csv('data/pokemon.csv')
+    except Exception as ex:
+        print("Exception occurred when loading pokémon data: " + ex)
+        return
     if not include_legendaries:
         pokemon_df = pokemon_df.query("Legendary == False")
     if not include_megas:
         pokemon_df = pokemon_df[~pokemon_df['Name'].str.contains('Mega')]
+
+    team_types = get_types(current_team)
+    current_resistances = calc_resistances(team_types)
+    current_weaknesses = calc_weaknesses(team_types)
 
     new_balance_dict = dict()
 
@@ -280,7 +297,7 @@ def recommend(current_team, n_recommendations=1, include_legendaries=False, incl
         new_balance = calc_balance(new_resistances, new_weaknesses)
         new_balance_dict[pkmn_name] = new_balance
         
-        if verbose and i % 25 == 24 or i==0:
+        if verbose and i % 25 == 24 or i == 0:
             print(f'Iteration number {i + 1} of {len(pokemon_df)}.')
 
     new_balance_df = pd.DataFrame(new_balance_dict, index=['balance']).T.\
