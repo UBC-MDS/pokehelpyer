@@ -2,6 +2,7 @@ import pandas as pd
 import itertools
 import re 
 
+
 def get_types(pokemon_names):
     """
     Given a list of pokémon names, determine the types of 
@@ -23,8 +24,14 @@ def get_types(pokemon_names):
     >>> get_types(['Pikachu', 'Eevee', 'Charizard', ...]) 
     [['Electric'], ['Normal'], ['Fire', 'Flying'], ...]    
     """
+    # Check input type
+    assert isinstance(pokemon_names, (list, str)), f"Incorrect input type."
+
     # Check for empty input
-    assert len(pokemon_names) != 0, "No names provided"
+    assert len(pokemon_names) != 0, "No names provided."
+
+    if isinstance(pokemon_names, str):
+        pokemon_names = [pokemon_names]
 
     # Read file with Pokemon names and types
     url = "https://gist.githubusercontent.com/armgilles/194bcff35001e7eb53a2a8b441e8b2c6/raw/92200bc0a673d5ce2110aaad4544ed6c4010f687/pokemon.csv"
@@ -35,7 +42,7 @@ def get_types(pokemon_names):
     names_types_df["Name"] = names_types_df["Name"].str.strip()
     names_types_df["Name"] = names_types_df["Name"].str.lower()
     # Some of the names in dataset contain symbols
-    name_with_symbol = names_types_df[names_types_df["Name"].str.match(".*[^\w\s].*")]["Name"].tolist()
+    name_with_symbol = names_types_df[names_types_df["Name"].str.match(r".*[^\w\s].*")]["Name"].tolist()
     
     poke_types = []
     for name in pokemon_names:
@@ -47,7 +54,7 @@ def get_types(pokemon_names):
             name = re.sub(r"[^\w\s]", "", name)
                 
         # Check if exists in data
-        assert name not in names_types_df["Name"], "Pokemon is not valid"
+        assert name in names_types_df["Name"].tolist(), f"{name} is not a valid pokémon."
         
         # Find the row with match
         row = names_types_df.loc[names_types_df["Name"] == name].values[0]
@@ -58,6 +65,7 @@ def get_types(pokemon_names):
             poke_types.append([row[1], row[2]])
             
     return poke_types
+
 
 def calc_resistances(team_types):
     """
@@ -198,7 +206,8 @@ def calc_weaknesses(team_types):
             weaknesses[item] = weakness_counter
     return weaknesses
 
-def recommend(current_team):
+
+def recommend(current_team, n_recommendations=1, include_legendaries=False, include_megas=False, verbose=True,  early_stop=False):
     """
     Given a team of up to 5 pokémon, recommend a 
     pokémon that could be added to the 
@@ -215,6 +224,19 @@ def recommend(current_team):
     ----------
     current_team : list of strings
         list of up to 5 pokémon names
+    n_recommendations : integer
+        number of pokemon to recommend (default = 1).
+    include_legendaries : boolean
+        whether or not to include legendary pokémon in
+        the recommendations (default = False).
+    include_megas : boolean
+        whether or not to include Mega pokémon in
+        the recommendations (default = False).
+    verbose : boolean
+        whether or not to print progress updates during the brute-force search.
+    early_stop : boolean 
+        whether or not to stop the brute force search early
+        (for speeding up unit testing) (default = False).
 
     Returns
     -------
@@ -227,42 +249,86 @@ def recommend(current_team):
     >>> recommend(['Pikachu', 'Eevee', 'Charizard', ...]) 
     "Lucario"  
     """
-    # Function code (TBD in Milestone 2)
-    
-    # Basic outline:
-        
+    # Handle user input error in case of single-pokemon team        
+    if isinstance(current_team, str):
+        current_team = [current_team]
+
+    # Check user input
+    assert isinstance(current_team, list), f"current_team should be a list of pokemon names."
+    assert len(current_team) > 0, "current_team should be a non-empty list of pokemon names."
+    assert isinstance(current_team[0], str), f"current_team should be a list of pokemon names."
+    assert isinstance(n_recommendations, int), f"n_recommendations should be an integer."
+    assert isinstance(include_legendaries, bool), f"include_legendaries should be a boolean value."
+    assert isinstance(include_megas, bool), f"include_megas should be a boolean value."
+    assert isinstance(verbose, bool), f"verbose should be a boolean value."
+
+    try:
+        pokemon_df = pd.read_csv('data/pokemon.csv')
+    except Exception as ex:
+        print("Exception occurred when loading pokémon data: " + ex)
+        return
+    if not include_legendaries:
+        pokemon_df = pokemon_df.query("Legendary == False")
+    if not include_megas:
+        pokemon_df = pokemon_df[~pokemon_df['Name'].str.contains('Mega')]
+
     team_types = get_types(current_team)
     current_resistances = calc_resistances(team_types)
     current_weaknesses = calc_weaknesses(team_types)
-    
-    current_balance = calc_balance(current_resistances, current_weaknesses)
-    best_balance = current_balance
 
-    pokemon_df = pd.read_csv('data/pokemon.csv')
+    new_balance_dict = dict()
 
+    # Loop through all posible pokemon that could be added to the team
+    for i in range(len(pokemon_df)):
+        pkmn = pokemon_df.iloc[i, :]
+        pkmn_name = pkmn['Name']
+        pkmn_types = [pkmn['Type 1'], pkmn['Type 2']]
+        if pd.isna(pkmn_types[1]):
+            pkmn_types.pop()
 
-    # for each new_pokemon in pokemon_df:
-        # get the type(s) `new_pokemon`, call it `pkmn_type`
-        pkmn_resistances = calc_resistances(pkmn_type)
-        pkmn_weaknesses = calc_weaknesses(pkmn_type)
+        pkmn_resistances = calc_resistances([pkmn_types])
+        pkmn_weaknesses = calc_weaknesses([pkmn_types])
 
-        # add the new pokemon's resistances to the current team's resistances
-        new_resistances = defaultdict(int)
-        for d in (current_resistances, new_resistances):
-            for type, val in d.items():
-                new_resistances[type] += val
+        # add the pokemon's resistances to the current team's resistances
+        new_resistances = dict()
+        for type in current_resistances.keys():
+            new_resistances[type] = current_resistances[type] + pkmn_resistances[type]
 
         # add the new pokemon's weaknesses to the current team's weaknesses
-        new_weaknesses = defaultdict(int)
-        for d in (current_weaknesses, new_weaknesses):
-            for type, val in d.items():
-                new_weaknesses[type] += val
+        new_weaknesses = dict()
+        for type in current_weaknesses.keys():
+                new_weaknesses[type] = current_weaknesses[type] + pkmn_weaknesses[type]
 
         new_balance = calc_balance(new_resistances, new_weaknesses)
-        if new_balance > best_balance:
-            recommendation = new_pokemon
+        new_balance_dict[pkmn_name] = new_balance
+        
+        if verbose and i % 25 == 24 or i == 0:
+            print(f'Iteration number {i + 1} of {len(pokemon_df)}.')
 
-    return recommendation
+        if early_stop and i > 30:
+            print('Stopping early because `early_stop = True`.')
+            print('Normally this is only used for testing.')
+            break
+
+    new_balance_df = pd.DataFrame(new_balance_dict, index=['balance']).T.\
+        reset_index().rename(columns={'index': 'Name'}).set_index('Name')
+
+    results_df = new_balance_df.join(pokemon_df.set_index('Name'), on = 'Name').\
+        sort_values(by=['balance', 'Total'], ascending=False)
+
+    if n_recommendations == 1:
+        return results_df.iloc[0, :].name
+
+    temp_df = results_df
+    recommendations = []
+    for i in range(n_recommendations):
+        recommendations.append(temp_df.iloc[0, :].name)
+        current_best_balance = temp_df.iloc[0, :]['balance']
+        temp_df = temp_df.query("balance != @current_best_balance").\
+        sort_values(by=['balance', 'Total'], ascending=False)
+
+    return recommendations
+
 
 def calc_balance(resistances, weaknesses):
     """
@@ -284,10 +350,28 @@ def calc_balance(resistances, weaknesses):
     balance : float 
         measure of how balanced the team is.
 
-    Example
+    Examples
     --------
-    TO-DO
-    """
+    >>> bad_team = ['Abomasnow', 'Ferrothorn', 'Parasect'] # All are doubly weak to fire
+    >>> resistances = calc_resistances(get_types(bad_team))
+    >>> weaknesses = calc_weaknesses(get_types(bad_team))
+    >>> calc_balance(resistances, weaknesses)
+    -3.11243
 
-    # Code TBD
+    >>> good_team = ['Spiritomb', 'Garchomp', 'Lucario'] 
+    >>> resistances = calc_resistances(get_types(good_team))
+    >>> weaknesses = calc_weaknesses(get_types(good_team))
+    >>> calc_balance(resistances, weaknesses)
+    25.06687
+    """
+    type_advantages = dict()
+    for type in resistances.keys():
+        delta = resistances[type] - weaknesses[type]
+        if delta >= 0:
+            type_advantages[type] = delta ** (3 / 4)
+        else:
+            type_advantages[type] = -(-delta) ** (3 / 2)
+    
+    balance = sum(type_advantages.values())
+    return balance
     
