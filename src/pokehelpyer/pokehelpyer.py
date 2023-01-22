@@ -33,10 +33,8 @@ def get_types(pokemon_names):
     if isinstance(pokemon_names, str):
         pokemon_names = [pokemon_names]
 
-    # Read file with Pokemon names and types
-    url = "https://gist.githubusercontent.com/armgilles/194bcff35001e7eb53a2a8b441e8b2c6/raw/92200bc0a673d5ce2110aaad4544ed6c4010f687/pokemon.csv"
-    # Keep only relevant subset of the data
-    names_types_df = pd.read_csv(url)[["Name", "Type 1", "Type 2"]]
+    # Read file with Pokemon names and types, and keep only relevant subset of the data
+    names_types_df = pd.read_csv('data/pokemon.csv')[["Name", "Type 1", "Type 2"]]
 
     # Clean string column "Name"
     names_types_df["Name"] = names_types_df["Name"].str.strip()
@@ -102,11 +100,8 @@ def calc_resistances(team_types):
     # Check for empty input
     assert len(team_types) != 0, "No types provided"
 
-    # Reads the file with Pokemon types, strengths and weaknesses
-    url = "https://raw.githubusercontent.com/zonination/pokemon-chart/master/chart.csv"
-
-    # Saves the data in Pandas data frame
-    resistances_df = pd.read_csv(url)
+    # Loads the file with Pokemon types, strengths and weaknesses into a data frame
+    resistances_df = pd.read_csv('data/type_chart.csv')
 
     # Flattening list and creating dictionary with all Pokemon types
     flat_types = list(itertools.chain.from_iterable(team_types))
@@ -171,11 +166,7 @@ def calc_weaknesses(team_types):
         return
 
     # Read the pokemon weakness dataframe using pandas
-    try:
-        weakness_df = pd.read_csv("https://raw.githubusercontent.com/zonination/pokemon-chart/master/chart.csv", sep=',', index_col = 0)
-    except Exception as ex:
-        print("Exception occurred :" + ex)
-        return
+    weakness_df = pd.read_csv('data/type_chart.csv', sep=',', index_col = 0)
     
     # Check if the returned object is a dataframe and fetch all types of pokemon
     if isinstance(weakness_df, pd.DataFrame):
@@ -262,11 +253,7 @@ def recommend(current_team, n_recommendations=1, include_legendaries=False, incl
     assert isinstance(include_megas, bool), f"include_megas should be a boolean value."
     assert isinstance(verbose, bool), f"verbose should be a boolean value."
 
-    try:
-        pokemon_df = pd.read_csv('data/pokemon.csv')
-    except Exception as ex:
-        print("Exception occurred when loading pokémon data: " + ex)
-        return
+    pokemon_df = pd.read_csv('data/pokemon.csv')
     if not include_legendaries:
         pokemon_df = pokemon_df.query("Legendary == False")
     if not include_megas:
