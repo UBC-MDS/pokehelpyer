@@ -352,9 +352,21 @@ def calc_balance(resistances, weaknesses):
     >>> calc_balance(resistances, weaknesses)
     25.06687
     """
+    # Check user input
+    assert isinstance(resistances, dict), r"Input 1 should be a dictionary of resistance values of the form {pkmn_type: <int or float>}."
+    assert isinstance(weaknesses, dict), r"Input 2 should be a dictionary of weakness values of the form {pkmn_type: <int or float>}."
+    types_set = set(pd.read_csv('data/type_chart.csv')['Attacking'].tolist())
+    assert set(resistances.keys()) == types_set, "Input 1 should be a dictionary of resistance values obtained via `calc_resistances`.\n There should be one key for each of the 18 pokemon types (including Fairy)."
+    assert set(weaknesses.keys()) == types_set, "Input 2 should be a dictionary of weakness values obtained via `calc_weaknesses`.\n There should be one key for each of the 18 pokemon types (including Fairy)."
+    assert isinstance(resistances['Normal'], (float, int)), "Input 1 should be a dictionary of resistance values obtained via `calc_resistances`.\n The values should be floats or integers."
+    assert isinstance(weaknesses['Normal'], (float, int)), "Input 2 should be a dictionary of weakness values obtained via `calc_weaknesses`.\n The values should be floats or integers."
+
     type_advantages = dict()
     for type in resistances.keys():
         delta = resistances[type] - weaknesses[type]
+
+        # Peicewise function to penalize negative values more
+        # (i.e. to favor penalizing weaknesses over rewaring resistances) 
         if delta >= 0:
             type_advantages[type] = delta ** (3 / 4)
         else:
