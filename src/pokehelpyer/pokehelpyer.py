@@ -24,12 +24,9 @@ def get_types(pokemon_names):
     >>> get_types(['Pikachu', 'Eevee', 'Charizard', ...]) 
     [['Electric'], ['Normal'], ['Fire', 'Flying'], ...]    
     """
-    # Check input type
-    assert isinstance(pokemon_names, (list, str)), f"Incorrect input type."
-
-    # Check for empty input
-    assert len(pokemon_names) != 0, "No names provided."
-
+    # Check user input
+    assert isinstance(pokemon_names, (list, str)), f"Input should be a list of pokemon names."
+    assert len(pokemon_names) != 0, "Input should be a non-empty list of pokemon names."
     if isinstance(pokemon_names, str):
         pokemon_names = [pokemon_names]
 
@@ -40,7 +37,8 @@ def get_types(pokemon_names):
     names_types_df["Name"] = names_types_df["Name"].str.strip()
     names_types_df["Name"] = names_types_df["Name"].str.lower()
     # Some of the names in dataset contain symbols
-    name_with_symbol = names_types_df[names_types_df["Name"].str.match(r".*[^\w\s].*")]["Name"].tolist()
+    name_with_symbol = names_types_df[names_types_df["Name"].\
+        str.match(r".*[^\w\s].*")]["Name"].tolist()
     
     poke_types = []
     for name in pokemon_names:
@@ -56,11 +54,9 @@ def get_types(pokemon_names):
         
         # Find the row with match
         row = names_types_df.loc[names_types_df["Name"] == name].values[0]
-        # Type 2 is optional
-        if pd.isna(row[2]):
-            poke_types.append([row[1]])
-        else:
-            poke_types.append([row[1], row[2]])
+        poke_types = [row[1], row[2]]
+        if pd.isna(row[2]): # Type 2 is optional
+            poke_types.pop()
             
     return poke_types
 
