@@ -42,7 +42,7 @@ def get_types(pokemon_names):
     names_types_df["Name"] = names_types_df["Name"].str.strip()
     names_types_df["Name"] = names_types_df["Name"].str.lower()
     # Some of the names in dataset contain symbols
-    name_with_symbol = names_types_df[names_types_df["Name"].str.match(".*[^\w\s].*")]["Name"].tolist()
+    name_with_symbol = names_types_df[names_types_df["Name"].str.match(r".*[^\w\s].*")]["Name"].tolist()
     
     poke_types = []
     for name in pokemon_names:
@@ -65,6 +65,7 @@ def get_types(pokemon_names):
             poke_types.append([row[1], row[2]])
             
     return poke_types
+
 
 def calc_resistances(team_types):
     """
@@ -205,7 +206,8 @@ def calc_weaknesses(team_types):
             weaknesses[item] = weakness_counter
     return weaknesses
 
-def recommend(current_team, n_recommendations=1, include_legendaries=False, include_megas=False, verbose=True):
+
+def recommend(current_team, n_recommendations=1, include_legendaries=False, include_megas=False, verbose=True,  early_stop=False):
     """
     Given a team of up to 5 pokémon, recommend a 
     pokémon that could be added to the 
@@ -232,6 +234,9 @@ def recommend(current_team, n_recommendations=1, include_legendaries=False, incl
         the recommendations (default = False).
     verbose : boolean
         whether or not to print progress updates during the brute-force search.
+    early_stop : boolean 
+        whether or not to stop the brute force search early
+        (for speeding up unit testing) (default = False).
 
     Returns
     -------
@@ -245,8 +250,8 @@ def recommend(current_team, n_recommendations=1, include_legendaries=False, incl
     "Lucario"  
     """
     # Handle user input error in case of single-pokemon team        
-    if isinstance(pokemon_names, str):
-        pokemon_names = [pokemon_names]
+    if isinstance(current_team, str):
+        current_team = [current_team]
 
     # Check user input
     assert isinstance(current_team, list), f"current_team should be a list of pokemon names."
@@ -300,6 +305,11 @@ def recommend(current_team, n_recommendations=1, include_legendaries=False, incl
         if verbose and i % 25 == 24 or i == 0:
             print(f'Iteration number {i + 1} of {len(pokemon_df)}.')
 
+        if early_stop and i > 30:
+            print('Stopping early because `early_stop = True`.')
+            print('Normally this is only used for testing.')
+            break
+
     new_balance_df = pd.DataFrame(new_balance_dict, index=['balance']).T.\
         reset_index().rename(columns={'index': 'Name'}).set_index('Name')
 
@@ -318,6 +328,7 @@ def recommend(current_team, n_recommendations=1, include_legendaries=False, incl
         sort_values(by=['balance', 'Total'], ascending=False)
 
     return recommendations
+
 
 def calc_balance(resistances, weaknesses):
     """

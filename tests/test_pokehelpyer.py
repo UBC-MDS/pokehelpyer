@@ -65,17 +65,20 @@ def test_calc_resistances():
 # recommend:
 
 def test_recommend():
-    """Test `recommend` returns a string or list of strings."""
-    assert isinstance(recommend(['Pikachu', 'Charizard']), str), "recommend with default arguments should return a string."
-    assert isinstance(recommend(['Pikachu', 'Charizard'], n_recommendations=1), str), "recommend with n_recommendations=1 should return a string."
-    assert isinstance(recommend(['Pikachu', 'Charizard'], n_recommendations=3), list), "recommend with n_recommendations > 1 should return a list of strings."
-    assert isinstance(recommend(['Pikachu', 'Charizard'], n_recommendations=3)[0], str), "recommend with n_recommendations > 1 should return a list of strings."
-    
-    """Test `recommend` handles user input error for teams with only one pokémon."""
-    actual = recommend('Pikachu')
-    assert isinstance(actual, str), "recommend should handle user input error for teams with only one pokemon."
-    expected = recommend(['Pikachu'])
-    assert actual == expected, "recommend should handle user input error for teams with only one pokemon."
+    """Test `recommend` returns the correct type of output."""
+    actual = recommend(['Pikachu', 'Charizard'], n_recommendations=1, early_stop=True)
+    assert isinstance(actual, str), "recommend with n_recommendations=1 should return a string."
+
+    n=3
+    actual = recommend(['Pikachu', 'Charizard'], n_recommendations=n, early_stop=True)
+    assert isinstance(actual, list), "recommend with n_recommendations > 1 should return a list of strings."
+    assert isinstance(actual[0], str), "recommend with n_recommendations > 1 should return a list of strings."
+    assert len(actual) == n, "recommend with n_recommendations > 1 should return a list of strings with length equal to n_recommendations."
+
+    """Test `recommend` deals with errorneous user input in the case of a team with only one pokémon."""
+    actual = recommend('Pikachu', early_stop=True)
+    expected = recommend(['Pikachu'], early_stop=True)
+    assert actual == expected
 
 
 # calc_balance:
