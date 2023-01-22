@@ -1,6 +1,5 @@
 import pandas as pd
 import itertools
-from collections import defaultdict
 import re 
 
 
@@ -244,16 +243,14 @@ def recommend(current_team):
         pkmn_weaknesses = calc_weaknesses(pkmn_types)
 
         # add the pokemon's resistances to the current team's resistances
-        new_resistances = defaultdict(int)
-        for dict in (current_resistances, new_resistances):
-            for type, val in dict.items():
-                new_resistances[type] += val
+        new_resistances = dict()
+        for type in current_resistances.keys():
+            new_resistances[type] += current_resistances[type] + new_resistances[type]
 
         # add the new pokemon's weaknesses to the current team's weaknesses
-        new_weaknesses = defaultdict(int)
-        for dict in (current_weaknesses, new_weaknesses):
-            for type, val in dict.items():
-                new_weaknesses[type] += val
+        new_weaknesses = dict()
+        for type in current_weaknesses.keys():
+                new_weaknesses[type] = current_weaknesses[type] + new_weaknesses[type]
 
         new_balance = calc_balance(new_resistances, new_weaknesses)
         new_balance_dict[pkmn_name] = new_balance
@@ -297,6 +294,14 @@ def calc_balance(resistances, weaknesses):
     --------
     TO-DO
     """
-
-    # Code TBD
+    type_advantages = dict()
+    for type in resistances.keys():
+        delta = resistances[type] - weaknesses[type]
+        if delta >= 0:
+            type_advantages[type] = delta ** (3 / 4)
+        else:
+            type_advantages[type] = -(-delta) ** (3 / 2)
+    
+    balance = sum(type_advantages.values())
+    return balance
     
