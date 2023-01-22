@@ -69,12 +69,12 @@ def get_types(pokemon_names):
 def calc_resistances(team_types):
     """
     Given a list of pokémon types present on a player's team,
-    calculate a measure of how resistant the team is to each type in the game.
+    calculate a measure of how resistant the team is to each type_combo in the game.
     
     Creates a dictionary in which the keys are each of the 18 types 
     in the game, and the values are integers measuring the level of 
-    resistance the input team has to that type. Higher values indicate a
-    higher level of resistance to that type (key).
+    resistance the input team has to that type_combo. Higher values indicate a
+    higher level of resistance to that type_combo (key).
 
     Parameters
     ----------
@@ -87,7 +87,7 @@ def calc_resistances(team_types):
     resistances : dictionary 
         a dictionary containing all 18 pokémon types as keys, 
         and integers measuring the level of resistance the input team
-        has to that type as values. 
+        has to that type_combo as values. 
 
     Examples
     --------
@@ -119,21 +119,21 @@ def calc_resistances(team_types):
     # Iterates over all types in the team
     for i in flat_types:
 
-        # Checks for type resistance and adds 1 to Pokemon type 
+        # Checks for type_combo resistance and adds 1 to Pokemon type_combo 
         normal_resistance = resistances_df[['Attacking', i]].query(f'{i}==0.5') 
         list_normal = normal_resistance['Attacking'].values.tolist()
         
-        for item in list_normal:
-            if item in resistances_dict:
-                resistances_dict[item] += 1
+        for attacking_type in list_normal:
+            if attacking_type in resistances_dict:
+                resistances_dict[attacking_type] += 1
 
-        # Checks for Pokemon immunity and adds 4 to Pokemon type        
+        # Checks for Pokemon immunity and adds 4 to Pokemon type_combo        
         double_resistance = resistances_df[['Attacking', i]].query(f'{i}==0')
         list_double = double_resistance['Attacking'].values.tolist()
                 
-        for item in list_double:
-            if item in resistances_dict:
-                resistances_dict[item] += 4
+        for attacking_type in list_double:
+            if attacking_type in resistances_dict:
+                resistances_dict[attacking_type] += 4
     
     return resistances_dict
 
@@ -141,12 +141,12 @@ def calc_resistances(team_types):
 def calc_weaknesses(team_types):
     """
     Given a list of pokémon types present on a player's team,
-    calculate a measure of how weak the team is to each type in the game.
+    calculate a measure of how weak the team is to each type_combo in the game.
     
     Creates a dictionary in which the keys are each of the 18 types 
     in the game, and the values are integers measuring the level of 
-    weakness the input team has to that key (type). Higher values indicate a
-    higher level of weakness to that type. 
+    weakness the input team has to that key (type_combo). Higher values indicate a
+    higher level of weakness to that type_combo. 
 
     Parameters
     ----------
@@ -159,7 +159,7 @@ def calc_weaknesses(team_types):
     weaknesses : dictionary 
         a dictionary containing all 18 pokémon types as keys, 
         and integers measuring the level of weakness the input team
-        has to that type as values. 
+        has to that type_combo as values. 
 
     Examples
     --------
@@ -182,34 +182,30 @@ def calc_weaknesses(team_types):
         return None
 
     # Read the pokemon weakness dataframe using pandas
-    weakness_df = pd.read_csv('data/type_chart.csv', sep=',', index_col = 0)
+    weakness_df = pd.read_csv('data/type_chart.csv')
     
     # Fetch all types of pokemon
     all_types = weakness_df.index.tolist()
     weaknesses = {x: 0 for x in all_types}
 
     # Calculate weaknesses of all types and add it to a dictionary
-    if all_types:
-        for item in all_types:
-            weakness_counter = 0
-            for type in team_types:
-                if len(type) == 1:
-                    val1 = weakness_df.loc[item][type[0]]
-                    if(val1 == 2):
-                        weakness_counter = 1
+    for attacking_type in all_types:
+        for type_combo in team_types:
+            val1 = weakness_df.loc[attacking_type][type_combo[0]]
+            if len(type_combo) == 1:
+                val2 = 1    
+            else:
+                val2 = weakness_df.loc[attacking_type][type_combo[1]]
 
-                elif len(type) == 2:
-                    type1 = type[0]
-                    type2 = type[1]
-                    val1 = weakness_df.loc[item][type1]
-                    val2 = weakness_df.loc[item][type2]
-
-                    if val1 == 2 and val2 == 2:
-                        weakness_counter += 2
-                    elif (val1 == 1 and val2 == 2) or (val1 == 2 and val2 == 1):
-                        weakness_counter += 1
+            if val1 == 0 or val2 == 0:
+                continue
+            elif (val1 == 0.5 and val2 == 2) or (val1 == 2 and val2 == 0.5):
+                continue 
+            elif val1 == 2 and val2 == 2:
+                weaknesses[attacking_type] += 2
+            elif (val1 == 1 and val2 == 2) or (val1 == 2 and val2 == 1):
+                weaknesses[attacking_type] += 1
             
-            weaknesses[item] = weakness_counter
     return weaknesses
 
 
@@ -293,13 +289,13 @@ def recommend(current_team, n_recommendations=1, include_legendaries=False, incl
 
         # add the pokemon's resistances to the current team's resistances
         new_resistances = dict()
-        for type in current_resistances.keys():
-            new_resistances[type] = current_resistances[type] + pkmn_resistances[type]
+        for type_combo in current_resistances.keys():
+            new_resistances[type_combo] = current_resistances[type_combo] + pkmn_resistances[type_combo]
 
         # add the new pokemon's weaknesses to the current team's weaknesses
         new_weaknesses = dict()
-        for type in current_weaknesses.keys():
-                new_weaknesses[type] = current_weaknesses[type] + pkmn_weaknesses[type]
+        for type_combo in current_weaknesses.keys():
+                new_weaknesses[type_combo] = current_weaknesses[type_combo] + pkmn_weaknesses[type_combo]
 
         new_balance = calc_balance(new_resistances, new_weaknesses)
         new_balance_dict[pkmn_name] = new_balance
@@ -379,15 +375,15 @@ def calc_balance(resistances, weaknesses):
         print(f"Invalid input: {ex}")
 
     type_advantages = dict()
-    for type in resistances.keys():
-        delta = resistances[type] - weaknesses[type]
+    for type_combo in resistances.keys():
+        delta = resistances[type_combo] - weaknesses[type_combo]
 
         # Peicewise function to penalize negative values more
         # (i.e. to favor penalizing weaknesses over rewaring resistances) 
         if delta >= 0:
-            type_advantages[type] = delta ** (3 / 4)
+            type_advantages[type_combo] = delta ** (3 / 4)
         else:
-            type_advantages[type] = -(-delta) ** (3 / 2)
+            type_advantages[type_combo] = -(-delta) ** (3 / 2)
     
     balance = sum(type_advantages.values())
     return balance
