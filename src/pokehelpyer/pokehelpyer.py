@@ -298,7 +298,7 @@ def recommend(current_team, n_recommendations=1, include_legendaries=False, incl
         new_balance = calc_balance(new_resistances, new_weaknesses)
         new_balance_dict[pkmn_name] = new_balance
         
-        if verbose and i % 25 == 24 or i == 0:
+        if verbose and i % 100 == 99 or i == 0:
             print(f'Iteration number {i + 1} of {len(pokemon_df)}.')
 
         if early_stop and i > 30:

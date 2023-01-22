@@ -56,7 +56,7 @@ def test_calc_resistances():
 
 def test_recommend():
     """Test `recommend` returns the correct type of output."""
-    actual = recommend(['Pikachu', 'Charizard'], n_recommendations=1, early_stop=True)
+    actual = recommend(['Pikachu', 'Charizard'], n_recommendations=1, early_stop=False) #  Do a full run for one test. Early stop for the rest.
     assert isinstance(actual, str), "recommend with n_recommendations=1 should return a string."
 
     n=3
