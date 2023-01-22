@@ -24,9 +24,10 @@ def get_types(pokemon_names):
     >>> get_types(['Pikachu', 'Eevee', 'Charizard', ...]) 
     [['Electric'], ['Normal'], ['Fire', 'Flying'], ...]    
     """
-    # Check user input
+    # Handle user input error in case of single pokemon    
     if isinstance(pokemon_names, str):
         pokemon_names = [pokemon_names]
+    # Check user input
     assert isinstance(pokemon_names, list), f"Input should be a list of pokemon names."
     assert len(pokemon_names) > 0, "Input should be a non-empty list of pokemon names."
     assert isinstance(pokemon_names[0], str), f"Input should be a list of pokemon names."
@@ -252,9 +253,6 @@ def recommend(current_team, n_recommendations=1, include_legendaries=False, incl
     assert len(current_team) > 0, "current_team should be a non-empty list of pokemon names."
     assert isinstance(current_team[0], str), f"current_team should be a list of pokemon names."
     assert isinstance(n_recommendations, int), f"n_recommendations should be an integer."
-    assert isinstance(include_legendaries, bool), f"include_legendaries should be a boolean value."
-    assert isinstance(include_megas, bool), f"include_megas should be a boolean value."
-    assert isinstance(verbose, bool), f"verbose should be a boolean value."
 
     pokemon_df = pd.read_csv('data/pokemon.csv')
     if not include_legendaries:
