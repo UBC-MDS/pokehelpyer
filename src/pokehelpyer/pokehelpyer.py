@@ -28,9 +28,12 @@ def get_types(pokemon_names):
     if isinstance(pokemon_names, str):
         pokemon_names = [pokemon_names]
     # Check user input
-    assert isinstance(pokemon_names, list), f"Input should be a list of pokemon names."
-    assert len(pokemon_names) > 0, "Input should be a non-empty list of pokemon names."
-    assert isinstance(pokemon_names[0], str), f"Input should be a list of pokemon names."
+    try:
+        assert isinstance(pokemon_names, list), f"Input should be a list of pokemon names."
+        assert len(pokemon_names) > 0, "Input should be a non-empty list of pokemon names."
+        assert isinstance(pokemon_names[0], str), f"Input should be a list of pokemon names."
+    except AssertionError as ex:
+        print(f"Invalid input: {ex}")
 
     # Read file with Pokemon names and types, and keep only relevant subset of the data
     names_types_df = pd.read_csv('data/pokemon.csv')[["Name", "Type 1", "Type 2"]]
@@ -56,9 +59,9 @@ def get_types(pokemon_names):
         
         # Find the row with match
         row = names_types_df.loc[names_types_df["Name"] == name].values[0]
-        poke_types = [row[1], row[2]]
+        poke_types.append([row[1], row[2]])
         if pd.isna(row[2]): # Type 2 is optional
-            poke_types.pop()
+            poke_types[-1].pop()
             
     return poke_types
 
@@ -96,11 +99,15 @@ def calc_resistances(team_types):
     
     """
     # Check user input
-    assert isinstance(team_types, list), f"Input should be a list of lists of pokemon types."
-    assert len(team_types) > 0, "Input should be a non-empty list of lists of pokemon types."
-    assert isinstance(team_types[0], list), f"Input should be a list of lists pokemon types."
-    assert len(team_types[0]) > 0, f"Input should be a non-empty list of non-empty lists of pokemon types."
-    assert isinstance(team_types[0][0], str), f"Input should be a list of lists pokemon types."
+    try:
+        assert isinstance(team_types, list), f"Input should be a list of lists of pokemon types."
+        assert len(team_types) > 0, "Input should be a non-empty list of lists of pokemon types."
+        assert isinstance(team_types[0], list), f"Input should be a list of lists pokemon types."
+        assert len(team_types[0]) > 0, f"Input should be a non-empty list of non-empty lists of pokemon types."
+        assert isinstance(team_types[0][0], str), f"Input should be a list of lists pokemon types."
+    except AssertionError as ex:
+        print(f"Invalid input: {ex}")
+        return None
 
     # Loads the file with Pokemon types, strengths and weaknesses into a data frame
     resistances_df = pd.read_csv('data/type_chart.csv')
@@ -156,7 +163,7 @@ def calc_weaknesses(team_types):
 
     Examples
     --------
-    >>> calc_weaknesses([['Electric'], ['Normal'], ['Fire', 'Flying']) 
+    >>> calc_weaknesses([['Electric'], ['Normal'], ['Fire', 'Flying']]) 
     {'Normal': 0, 'Fire': 0, 'Water': 1, 'Grass': 0, 'Electric': 1, ...}
 
     >>> calc_weaknesses([['Ice', 'Grass']) # Abomasnow is doubly weak to Fire
@@ -164,11 +171,15 @@ def calc_weaknesses(team_types):
     
     """    
     # Check user input
-    assert isinstance(team_types, list), f"Input should be a list of lists of pokemon types."
-    assert len(team_types) > 0, "Input should be a non-empty list of lists of pokemon types."
-    assert isinstance(team_types[0], list), f"Input should be a list of lists pokemon types."
-    assert len(team_types[0]) > 0, f"Input should be a non-empty list of non-empty lists of pokemon types."
-    assert isinstance(team_types[0][0], str), f"Input should be a list of lists pokemon types."
+    try:
+        assert isinstance(team_types, list), f"Input should be a list of lists of pokemon types."
+        assert len(team_types) > 0, "Input should be a non-empty list of lists of pokemon types."
+        assert isinstance(team_types[0], list), f"Input should be a list of lists pokemon types."
+        assert len(team_types[0]) > 0, f"Input should be a non-empty list of non-empty lists of pokemon types."
+        assert isinstance(team_types[0][0], str), f"Input should be a list of lists pokemon types."
+    except AssertionError as ex:
+        print(f"Invalid input: {ex}")
+        return None
 
     # Read the pokemon weakness dataframe using pandas
     weakness_df = pd.read_csv('data/type_chart.csv', sep=',', index_col = 0)
@@ -249,10 +260,13 @@ def recommend(current_team, n_recommendations=1, include_legendaries=False, incl
         current_team = [current_team]
 
     # Check user input
-    assert isinstance(current_team, list), f"current_team should be a list of pokemon names."
-    assert len(current_team) > 0, "current_team should be a non-empty list of pokemon names."
-    assert isinstance(current_team[0], str), f"current_team should be a list of pokemon names."
-    assert isinstance(n_recommendations, int), f"n_recommendations should be an integer."
+    try:
+        assert isinstance(current_team, list), f"current_team should be a list of pokemon names."
+        assert len(current_team) > 0, "current_team should be a non-empty list of pokemon names."
+        assert isinstance(current_team[0], str), f"current_team should be a list of pokemon names."
+        assert isinstance(n_recommendations, int), f"n_recommendations should be an integer."
+    except AssertionError as ex:
+        print(f"Invalid input: {ex}")
 
     pokemon_df = pd.read_csv('data/pokemon.csv')
     if not include_legendaries:
@@ -353,13 +367,16 @@ def calc_balance(resistances, weaknesses):
     25.06687
     """
     # Check user input
-    assert isinstance(resistances, dict), r"Input 1 should be a dictionary of resistance values of the form {pkmn_type: <int or float>}."
-    assert isinstance(weaknesses, dict), r"Input 2 should be a dictionary of weakness values of the form {pkmn_type: <int or float>}."
-    types_set = set(pd.read_csv('data/type_chart.csv')['Attacking'].tolist())
-    assert set(resistances.keys()) == types_set, "Input 1 should be a dictionary of resistance values obtained via `calc_resistances`.\n There should be one key for each of the 18 pokemon types (including Fairy)."
-    assert set(weaknesses.keys()) == types_set, "Input 2 should be a dictionary of weakness values obtained via `calc_weaknesses`.\n There should be one key for each of the 18 pokemon types (including Fairy)."
-    assert isinstance(resistances['Normal'], (float, int)), "Input 1 should be a dictionary of resistance values obtained via `calc_resistances`.\n The values should be floats or integers."
-    assert isinstance(weaknesses['Normal'], (float, int)), "Input 2 should be a dictionary of weakness values obtained via `calc_weaknesses`.\n The values should be floats or integers."
+    try:
+        assert isinstance(resistances, dict), r"Input 1 should be a dictionary of resistance values of the form {pkmn_type: <int or float>}."
+        assert isinstance(weaknesses, dict), r"Input 2 should be a dictionary of weakness values of the form {pkmn_type: <int or float>}."
+        types_set = set(pd.read_csv('data/type_chart.csv')['Attacking'].tolist())
+        assert set(resistances.keys()) == types_set, "Input 1 should be a dictionary of resistance values obtained via `calc_resistances`.\n There should be one key for each of the 18 pokemon types (including Fairy)."
+        assert set(weaknesses.keys()) == types_set, "Input 2 should be a dictionary of weakness values obtained via `calc_weaknesses`.\n There should be one key for each of the 18 pokemon types (including Fairy)."
+        assert isinstance(resistances['Normal'], (float, int)), "Input 1 should be a dictionary of resistance values obtained via `calc_resistances`.\n The values should be floats or integers."
+        assert isinstance(weaknesses['Normal'], (float, int)), "Input 2 should be a dictionary of weakness values obtained via `calc_weaknesses`.\n The values should be floats or integers."
+    except AssertionError as ex:
+        print(f"Invalid input: {ex}")
 
     type_advantages = dict()
     for type in resistances.keys():
