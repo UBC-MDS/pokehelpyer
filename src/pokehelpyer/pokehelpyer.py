@@ -339,9 +339,19 @@ def calc_balance(resistances, weaknesses):
     balance : float 
         measure of how balanced the team is.
 
-    Example
+    Examples
     --------
-    TO-DO
+    >>> bad_team = ['Abomasnow', 'Ferrothorn', 'Parasect'] # All are doubly weak to fire
+    >>> resistances = calc_resistances(get_types(bad_team))
+    >>> weaknesses = calc_weaknesses(get_types(bad_team))
+    >>> calc_balance(resistances, weaknesses)
+    -3.11243
+
+    >>> good_team = ['Spiritomb', 'Garchomp', 'Lucario'] 
+    >>> resistances = calc_resistances(get_types(good_team))
+    >>> weaknesses = calc_weaknesses(get_types(good_team))
+    >>> calc_balance(resistances, weaknesses)
+    25.06687
     """
     type_advantages = dict()
     for type in resistances.keys():
