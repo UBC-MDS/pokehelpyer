@@ -49,7 +49,7 @@ def test_calc_resistances():
     """Test calc_resistances functionality."""
     assert sum(calc_resistances([["Normal"]]).values()) == 4, "Pokemon type does not add 4 points for immunity"
     assert calc_resistances([['Steel', 'Flying']])['Grass'] == 2, "Pokemon type does not add 2 points for double resistance"
-    assert sum(calc_resistances([['Dark', 'Fairy']]).values()) == 13, "Combination of immunity, double resistance or single resistance not being calculated properly"
+    assert sum(calc_resistances([['Dark', 'Fairy']]).values()) == 4 + 4 + 2 + 1, "Combination of immunity, double resistance or single resistance not being calculated properly"
 
 
 # recommend:
