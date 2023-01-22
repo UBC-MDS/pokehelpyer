@@ -34,6 +34,7 @@ def get_types(pokemon_names):
         assert isinstance(pokemon_names[0], str), f"Input should be a list of pokemon names."
     except AssertionError as ex:
         print(f"Invalid input: {ex}")
+        return None
 
     # Read file with Pokemon names and types, and keep only relevant subset of the data
     names_types_df = pd.read_csv('data/pokemon.csv')[["Name", "Type 1", "Type 2"]]
@@ -257,10 +258,12 @@ def recommend(current_team, n_recommendations=1, include_legendaries=False, incl
     try:
         assert isinstance(current_team, list), f"current_team should be a list of pokemon names."
         assert len(current_team) > 0, "current_team should be a non-empty list of pokemon names."
+        assert len(current_team) < 6, "current_team should have less than six pokemon names."
         assert isinstance(current_team[0], str), f"current_team should be a list of pokemon names."
         assert isinstance(n_recommendations, int), f"n_recommendations should be an integer."
     except AssertionError as ex:
         print(f"Invalid input: {ex}")
+        return None
 
     pokemon_df = pd.read_csv('data/pokemon.csv')
     if not include_legendaries:
@@ -371,6 +374,7 @@ def calc_balance(resistances, weaknesses):
         assert isinstance(weaknesses['Normal'], (float, int)), "Input 2 should be a dictionary of weakness values obtained via `calc_weaknesses`.\n The values should be floats or integers."
     except AssertionError as ex:
         print(f"Invalid input: {ex}")
+        return None
 
     type_advantages = dict()
     for type_combo in resistances.keys():
