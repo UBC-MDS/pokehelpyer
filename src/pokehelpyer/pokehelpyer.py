@@ -70,12 +70,12 @@ def get_types(pokemon_names):
 def calc_resistances(team_types):
     """
     Given a list of pokémon types present on a player's team,
-    calculate a measure of how resistant the team is to each type_combo in the game.
+    calculate a measure of how resistant the team is to each type in the game.
     
     Creates a dictionary in which the keys are each of the 18 types 
     in the game, and the values are integers measuring the level of 
-    resistance the input team has to that type_combo. Higher values indicate a
-    higher level of resistance to that type_combo (key).
+    resistance the input team has to that type. Higher values indicate a
+    higher level of resistance to that type (key).
 
     Parameters
     ----------
@@ -88,7 +88,7 @@ def calc_resistances(team_types):
     resistances : dictionary 
         a dictionary containing all 18 pokémon types as keys, 
         and integers measuring the level of resistance the input team
-        has to that type_combo as values. 
+        has to that type as values. 
 
     Examples
     --------
@@ -140,12 +140,12 @@ def calc_resistances(team_types):
 def calc_weaknesses(team_types):
     """
     Given a list of pokémon types present on a player's team,
-    calculate a measure of how weak the team is to each type_combo in the game.
+    calculate a measure of how weak the team is to each type in the game.
     
     Creates a dictionary in which the keys are each of the 18 types 
     in the game, and the values are integers measuring the level of 
-    weakness the input team has to that key (type_combo). Higher values indicate a
-    higher level of weakness to that type_combo. 
+    weakness the input team has to that key (type). Higher values indicate a
+    higher level of weakness to that type. 
 
     Parameters
     ----------
@@ -158,7 +158,7 @@ def calc_weaknesses(team_types):
     weaknesses : dictionary 
         a dictionary containing all 18 pokémon types as keys, 
         and integers measuring the level of weakness the input team
-        has to that type_combo as values. 
+        has to that type as values. 
 
     Examples
     --------
@@ -220,6 +220,9 @@ def recommend(current_team, n_recommendations=1, include_legendaries=False, incl
     most resistant to via `calc_resistances` and 
     `calc_weaknesses`, and then makes its recommendation 
     based on this information.
+    In particular, it uses `calc_balance` together a brute-force search of 
+    all ~700 pokémon to determine its recommendation based on the objective of 
+    maximizing balance.
 
     Parameters
     ----------
