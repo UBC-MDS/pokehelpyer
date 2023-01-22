@@ -10,7 +10,7 @@ The `pokehelpyer` package aims to assist players in avoiding imbalances in weakn
 
 
 ## Functions Included
-- `add_team_members`: Given a list of pokémon names, determine the types of the pokémon using an existing dataset. 
+- `get_types`: Given a list of pokémon names, determine the types of the pokémon using an existing dataset. 
 
 - `calc_weaknesses`: Given a list of pokémon types, determine how many types in the list are weak to each type in the game. Creates a dictionary in which the keys are each of the 18 types in the game, and the values are integers ranging from 0 to the length of the input list of types.
 
