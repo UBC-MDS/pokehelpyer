@@ -25,10 +25,11 @@ def get_types(pokemon_names):
     [['Electric'], ['Normal'], ['Fire', 'Flying'], ...]    
     """
     # Check user input
-    assert isinstance(pokemon_names, (list, str)), f"Input should be a list of pokemon names."
-    assert len(pokemon_names) != 0, "Input should be a non-empty list of pokemon names."
     if isinstance(pokemon_names, str):
         pokemon_names = [pokemon_names]
+    assert isinstance(pokemon_names, list), f"Input should be a list of pokemon names."
+    assert len(pokemon_names) > 0, "Input should be a non-empty list of pokemon names."
+    assert isinstance(pokemon_names[0], str), f"Input should be a list of pokemon names."
 
     # Read file with Pokemon names and types, and keep only relevant subset of the data
     names_types_df = pd.read_csv('data/pokemon.csv')[["Name", "Type 1", "Type 2"]]
@@ -93,8 +94,12 @@ def calc_resistances(team_types):
     {'Normal': 1, 'Fire': 0, 'Water': 0, 'Grass': 2, 'Electric': 0, ...}
     
     """
-    # Check for empty input
-    assert len(team_types) != 0, "No types provided"
+    # Check user input
+    assert isinstance(team_types, list), f"Input should be a list of lists of pokemon types."
+    assert len(team_types) > 0, "Input should be a non-empty list of lists of pokemon types."
+    assert isinstance(team_types[0], list), f"Input should be a list of lists pokemon types."
+    assert len(team_types[0]) > 0, f"Input should be a non-empty list of non-empty lists of pokemon types."
+    assert isinstance(team_types[0][0], str), f"Input should be a list of lists pokemon types."
 
     # Loads the file with Pokemon types, strengths and weaknesses into a data frame
     resistances_df = pd.read_csv('data/type_chart.csv')
@@ -157,17 +162,19 @@ def calc_weaknesses(team_types):
     {'Normal': 0, 'Fire': 2, 'Water': 0, 'Grass': 0, 'Electric': 0, ...}
     
     """    
-    # Check if input list is empty
-    if len(team_types) == 0:
-        return
+    # Check user input
+    assert isinstance(team_types, list), f"Input should be a list of lists of pokemon types."
+    assert len(team_types) > 0, "Input should be a non-empty list of lists of pokemon types."
+    assert isinstance(team_types[0], list), f"Input should be a list of lists pokemon types."
+    assert len(team_types[0]) > 0, f"Input should be a non-empty list of non-empty lists of pokemon types."
+    assert isinstance(team_types[0][0], str), f"Input should be a list of lists pokemon types."
 
     # Read the pokemon weakness dataframe using pandas
     weakness_df = pd.read_csv('data/type_chart.csv', sep=',', index_col = 0)
     
-    # Check if the returned object is a dataframe and fetch all types of pokemon
-    if isinstance(weakness_df, pd.DataFrame):
-        all_types = weakness_df.index.tolist()
-        weaknesses = {x: 0 for x in all_types}
+    # Fetch all types of pokemon
+    all_types = weakness_df.index.tolist()
+    weaknesses = {x: 0 for x in all_types}
 
     # Calculate weaknesses of all types and add it to a dictionary
     if all_types:
