@@ -10,20 +10,50 @@ The `pokehelpyer` package aims to assist players in avoiding imbalances in weakn
 
 
 ## Functions Included
-- `get_types`: Given a list of pokémon names, determine the types of the pokémon using an existing dataset. 
 
-- `calc_weaknesses`: Given a list of pokémon types, determine how many types in the list are weak to each type in the game. Creates a dictionary in which the keys are each of the 18 types in the game, and the values are integers ranging from 0 to the length of the input list of types.
+- `get_types`: Given a list of pokémon names, determine the types of those pokémon using an existing dataset.
+<br>
 
-- `calc_resistances`: Given a list of pokémon types, determine how many types in the list are resistant to each type in the game. Creates a dictionary in which the keys are each of the 18 types in the game, and the values are integers ranging from 0 to the length of the input list of types.
+- `calc_resistances`:  Given a list of pokémon types present on a player's team,
+    calculate a measure of how resistant the team is to each type in the game.
 
-- `recommend`: Given a team of up to 5 pokémon, recommend a pokémon that could be added to the current team to make its weaknesses and resistances more balanced. This function first determines which types the team is most weak to which types the team is most resistant to via `calc_resistances` and `calc_weaknesses`, and then makes its recommendation based on this information.
+    - Creates a dictionary in which the keys are each of the 18 types
+    in the game, and the values are integers measuring the level of
+    resistance the input team has to that key (type). Higher values indicate a
+    higher level of resistance to that type.
+<br><br>
+
+- `calc_weaknesses`: Given a list of pokémon types present on a player's team,
+    calculate a measure of how weak the team is to each type in the game.
+
+    - Creates a dictionary in which the keys are each of the 18 types
+    in the game, and the values are integers measuring the level of
+    weakness the input team has to that key (type). Higher values indicate a
+    higher level of weakness to that type.
+<br><br>
+
+- `recommend`: Given a team of up to 5 pokémon, recommend a
+    pokémon that could be added to the
+    current team to make its weaknesses and
+    resistances more balanced.
+    - Determines which types the
+    team is most resistant to and weak to via `calc_resistances` and
+    `calc_weaknesses`, and then makes its recommendation
+    based on this information.
+    - In particular, it uses `calc_balance` together a brute-force search of
+    all ~700 pokémon to determine its recommendation based on the objective of
+    maximizing balance.
+<br><br>
+
+- `calc_balance`: Calculate a measure of how balanced a pokémon team is using its
+    weaknesses and resistances. Higher values indicate a more balanced team.
 
 ## Datasets Included
 
-- [pokémon.csv](https://gist.github.com/armgilles/194bcff35001e7eb53a2a8b441e8b2c6): Dataset containing details about each pokémon including its type.
-- [chart.csv](https://github.com/zonination/pokemon-chart/blob/master/chart.csv): Dataset containing details abouts the weaknesses and strengths of each type of pokémon.
+- [pokémon.csv](https://github.com/UBC-MDS/pokehelpyer/blob/main/data/pokemon.csv): Dataset containing details about each pokémon including its name, type(s), and base stats.
+- [type_chart.csv](https://github.com/UBC-MDS/pokehelpyer/blob/main/data/type_chart.csv): Dataset containing details abouts the weaknesses and strengths of each type of pokémon.
 
-## Place in the Python Ecosystem
+## Place Within the Python Ecosystem
 There are websites and applications that help build pokémon teams, such as the [Mariland Team Builder](https://marriland.com/tools/team-builder/en/). However these tools simply present the player with a visual representation of their current team's weaknesses and resistances. They don't make recommendations. In other words, the existing tools simply given visual representations of the dictionaries created by `calc_weaknesses` and `calc_resistances`. There doesn't seem to be any existing Python packages which will use the weaknesses/resistances data to make reccomendations for additional team members.
 
 ## Installation
@@ -34,7 +64,7 @@ $ pip install pokehelpyer
 
 ## Usage
 
-- TODO
+- TO-DO
 
 ## Contributors
 - Raul Aguilar
@@ -46,10 +76,12 @@ $ pip install pokehelpyer
 
 Interested in contributing? Check out the [contributing guidelines](https://github.com/UBC-MDS/pokehelpyer/blob/main/CONTRIBUTING.md). Please note that this project is released with a [Code of Conduct](https://github.com/UBC-MDS/pokehelpyer/blob/main/CONDUCT.md). By contributing to this project, you agree to abide by its terms.
 
-## License
-
-`pokehelpyer` was created by Sneha Sunil, Jakob Thoms, Ritisha Sharma, Raul Aguilar. It is licensed under the terms of the MIT license.
-
 ## Credits
 
 `pokehelpyer` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
+
+## License
+
+`pokehelpyer` was created by Jakob Thoms, Ritisha Sharma, Raul Aguilar, and Sneha Sunil. It is licensed under the terms of the MIT license.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
