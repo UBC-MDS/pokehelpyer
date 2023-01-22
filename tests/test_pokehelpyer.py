@@ -34,23 +34,13 @@ def test_calc_weaknesses_invalid_result():
     expected_dict = {'Normal': 0, 'Fire': 0, 'Water': 1, 'Electric': 1, 'Grass': 0, 'Ice': 0, 'Fighting': 1, 'Poison': 1, 'Ground': 1, 'Flying': 1, 'Psychic': 0, 'Bug': 1, 'Rock': 2, 'Ghost': 0, 'Dragon': 0, 'Dark': 0, 'Steel': 1, 'Fairy': 0}
     assert actual_dict != expected_dict
 
-def test_calc_weaknesses_invalid_input_list():
-    """Tests the calculate weaknesses function for empty input list"""
-    actual_val = calc_weaknesses([])
-    assert actual_val == None
 
 def test_calc_weaknesses_invalid_input():
-    """Tests the calculate weaknesses function for an empty list within the input list"""
+    """Tests the calculate weaknesses function for empty inputs"""
+    actual_val = calc_weaknesses([])
+    assert actual_val == None
     actual_val = calc_weaknesses([[], []])
-    assert actual_val != None
-
-def test_calc_weaknesses_returns_empty_dict():
-    """Tests the calculate weaknesses function for an empty list within the input list returns an empty dictionary"""
-    actual = calc_weaknesses([[], []])
-    expected = {'Normal': 0, 'Fire': 0, 'Water': 0, 'Electric': 0, 'Grass': 0, 'Ice': 0, 'Fighting': 0,
-     'Poison': 0, 'Ground': 0, 'Flying': 0, 'Psychic': 0, 'Bug': 0, 'Rock': 0, 'Ghost': 0, 'Dragon': 0,
-      'Dark': 0, 'Steel': 0, 'Fairy': 0}
-    assert actual == expected
+    assert actual_val == None
 
 
 # calc_resistances:
