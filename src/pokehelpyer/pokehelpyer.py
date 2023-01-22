@@ -126,7 +126,7 @@ def calc_resistances(team_types):
                 val2 = resistances_df.loc[attacking_type][type_combo[1]]
 
             if val1 == 0 or val2 == 0:
-                resistances[attacking_type] += 4
+                resistances[attacking_type] += 3
             elif (val1 == 0.5 and val2 == 2) or (val1 == 2 and val2 == 0.5):
                 continue 
             elif val1 == 0.5 and val2 == 0.5:
