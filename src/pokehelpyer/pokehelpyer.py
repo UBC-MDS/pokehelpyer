@@ -110,32 +110,30 @@ def calc_resistances(team_types):
         return None
 
     # Loads the file with Pokemon types, strengths and weaknesses into a data frame
-    resistances_df = pd.read_csv('data/type_chart.csv')
+    resistances_df = pd.read_csv('data/type_chart.csv', index_col = 0)
 
-    # Flattening list and creating dictionary with all Pokemon types
-    flat_types = list(itertools.chain.from_iterable(team_types))
-    resistances_dict = {value: 0 for value in resistances_df['Attacking'].values.tolist()}
+    # Creating dictionary with all Pokemon types
+    all_types = resistances_df.index.tolist()
+    resistances = {x: 0 for x in all_types}
 
-    # Iterates over all types in the team
-    for i in flat_types:
+    for attacking_type in all_types:
+        for type_combo in team_types:
+            val1 = resistances_df.loc[attacking_type][type_combo[0]]
+            if len(type_combo) == 1:
+                val2 = 1    
+            else:
+                val2 = resistances_df.loc[attacking_type][type_combo[1]]
 
-        # Checks for type_combo resistance and adds 1 to Pokemon type_combo 
-        normal_resistance = resistances_df[['Attacking', i]].query(f'{i}==0.5') 
-        list_normal = normal_resistance['Attacking'].values.tolist()
-        
-        for attacking_type in list_normal:
-            if attacking_type in resistances_dict:
-                resistances_dict[attacking_type] += 1
-
-        # Checks for Pokemon immunity and adds 4 to Pokemon type_combo        
-        double_resistance = resistances_df[['Attacking', i]].query(f'{i}==0')
-        list_double = double_resistance['Attacking'].values.tolist()
-                
-        for attacking_type in list_double:
-            if attacking_type in resistances_dict:
-                resistances_dict[attacking_type] += 4
-    
-    return resistances_dict
+            if val1 == 0 or val2 == 0:
+                resistances[attacking_type] += 4
+            elif (val1 == 0.5 and val2 == 2) or (val1 == 2 and val2 == 0.5):
+                continue 
+            elif val1 == 0.5 and val2 == 0.5:
+                resistances[attacking_type] += 2
+            elif (val1 == 1 and val2 == 0.5) or (val1 == 0.5 and val2 == 1):
+                resistances[attacking_type] += 1
+            
+    return resistances
 
 
 def calc_weaknesses(team_types):
@@ -182,7 +180,7 @@ def calc_weaknesses(team_types):
         return None
 
     # Read the pokemon weakness dataframe using pandas
-    weakness_df = pd.read_csv('data/type_chart.csv')
+    weakness_df = pd.read_csv('data/type_chart.csv', index_col = 0)
     
     # Fetch all types of pokemon
     all_types = weakness_df.index.tolist()
@@ -193,7 +191,7 @@ def calc_weaknesses(team_types):
         for type_combo in team_types:
             val1 = weakness_df.loc[attacking_type][type_combo[0]]
             if len(type_combo) == 1:
-                val2 = 1    
+                val2 = 1
             else:
                 val2 = weakness_df.loc[attacking_type][type_combo[1]]
 
