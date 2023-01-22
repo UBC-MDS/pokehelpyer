@@ -205,7 +205,7 @@ def calc_weaknesses(team_types):
             weaknesses[item] = weakness_counter
     return weaknesses
 
-def recommend(current_team):
+def recommend(current_team, n_recommendations=1, include_legendaries=False, include_megas=False, verbose=True):
     """
     Given a team of up to 5 pokémon, recommend a 
     pokémon that could be added to the 
@@ -222,6 +222,16 @@ def recommend(current_team):
     ----------
     current_team : list of strings
         list of up to 5 pokémon names
+    n_recommendations : integer
+        number of pokemon to recommend (default = 1).
+    include_legendaries : boolean
+        whether or not to include legendary pokémon in
+        the recommendations (default = False).
+    include_megas : boolean
+        whether or not to include Mega pokémon in
+        the recommendations (default = False).
+    verbose : boolean
+        whether or not to print progress updates during the brute-force search.
 
     Returns
     -------
@@ -239,10 +249,16 @@ def recommend(current_team):
     current_weaknesses = calc_weaknesses(team_types)
     
     pokemon_df = pd.read_csv('data/pokemon.csv')
+    if not include_legendaries:
+        pokemon_df = pokemon_df.query("Legendary == False")
+    if not include_megas:
+        pokemon_df = pokemon_df[~pokemon_df['Name'].str.contains('Mega')]
+
     new_balance_dict = dict()
 
     # Loop through all posible pokemon that could be added to the team
-    for i, pkmn in pokemon_df.iterrows():
+    for i in range(len(pokemon_df)):
+        pkmn = pokemon_df.iloc[i, :]
         pkmn_name = pkmn['Name']
         pkmn_types = [pkmn['Type 1'], pkmn['Type 2']]
         if pd.isna(pkmn_types[1]):
@@ -250,6 +266,7 @@ def recommend(current_team):
 
         pkmn_resistances = calc_resistances([pkmn_types])
         pkmn_weaknesses = calc_weaknesses([pkmn_types])
+
         # add the pokemon's resistances to the current team's resistances
         new_resistances = dict()
         for type in current_resistances.keys():
@@ -263,8 +280,8 @@ def recommend(current_team):
         new_balance = calc_balance(new_resistances, new_weaknesses)
         new_balance_dict[pkmn_name] = new_balance
         
-        if i % 10 == 0:
-            print(f'iteration {i} of {len(pokemon_df)}')
+        if verbose and i % 25 == 24 or i==0:
+            print(f'Iteration number {i + 1} of {len(pokemon_df)}.')
 
     new_balance_df = pd.DataFrame(new_balance_dict, index=['balance']).T.\
         reset_index().rename(columns={'index': 'Name'}).set_index('Name')
@@ -272,9 +289,12 @@ def recommend(current_team):
     results_df = new_balance_df.join(pokemon_df.set_index('Name'), on = 'Name').\
         sort_values(by=['balance', 'Total'], ascending=False)
 
+    if n_recommendations == 1:
+        return results_df.iloc[0, :].name
+
     temp_df = results_df
     recommendations = []
-    for i in range(3):
+    for i in range(n_recommendations):
         recommendations.append(temp_df.iloc[0, :].name)
         current_best_balance = temp_df.iloc[0, :]['balance']
         temp_df = temp_df.query("balance != @current_best_balance").\
