@@ -148,11 +148,15 @@ def calc_resistances(team_types):
 
             if val1 == 0 or val2 == 0:
                 resistances[attacking_type] += 3
-            elif (val1 == 0.5 and val2 == 2) or (val1 == 2 and val2 == 0.5):
+            elif (val1 == 0.5 and val2 == 2) or (
+                val1 == 2 and val2 == 0.5
+            ):
                 continue
             elif val1 == 0.5 and val2 == 0.5:
                 resistances[attacking_type] += 2
-            elif (val1 == 1 and val2 == 0.5) or (val1 == 0.5 and val2 == 1):
+            elif (val1 == 1 and val2 == 0.5) or (
+                val1 == 0.5 and val2 == 1
+            ):
                 resistances[attacking_type] += 1
 
     return resistances
@@ -229,7 +233,9 @@ def calc_weaknesses(team_types):
 
             if val1 == 0 or val2 == 0:
                 continue
-            elif (val1 == 0.5 and val2 == 2) or (val1 == 2 and val2 == 0.5):
+            elif (val1 == 0.5 and val2 == 2) or (
+                val1 == 2 and val2 == 0.5
+            ):
                 continue
             elif val1 == 2 and val2 == 2:
                 weaknesses[attacking_type] += 2
@@ -343,14 +349,16 @@ def recommend(
         new_resistances = dict()
         for type_combo in current_resistances.keys():
             new_resistances[type_combo] = (
-                current_resistances[type_combo] + pkmn_resistances[type_combo]
+                current_resistances[type_combo]
+                + pkmn_resistances[type_combo]
             )
 
         # add the new pokemon's weaknesses to the current team's weaknesses
         new_weaknesses = dict()
         for type_combo in current_weaknesses.keys():
             new_weaknesses[type_combo] = (
-                current_weaknesses[type_combo] + pkmn_weaknesses[type_combo]
+                current_weaknesses[type_combo]
+                + pkmn_weaknesses[type_combo]
             )
 
         new_balance = calc_balance(new_resistances, new_weaknesses)
