@@ -107,7 +107,7 @@ def test_calc_resistances():
     assert (
         sum(calc_resistances([["Dark", "Fairy"]]).values())
         == 3 + 3 + 2 + 1
-    ), """Combination of immunity, double resistance or 
+    ), """Combination of immunity, double resistance or
         single resistance not being calculated properly"""
 
 
@@ -135,9 +135,10 @@ def test_recommend():
     ), "recommend with n_recommendations > 1 should return a list of strings."
     assert (
         len(actual) == n
-    ), "recommend with n_recommendations > 1 should return a list of strings with length equal to n_recommendations."
+    ), """recommend with n_recommendations > 1 should return a
+        list of strings with length equal to n_recommendations."""
 
-    """Test `recommend` deals with errorneous user input 
+    """Test `recommend` deals with errorneous user input
         in the case of a team with only one pokémon."""
     actual = recommend("Pikachu", early_stop=True)
     expected = recommend(["Pikachu"], early_stop=True)
@@ -227,25 +228,25 @@ def test_calc_balance():
     """Test `calc_balance` returns reasonable values."""
     assert (
         calc_balance(zero_resistances, zero_weaknesses) == 0
-    ), """calc_balance should return zero for a team 
+    ), """calc_balance should return zero for a team
         with no resistances nor weaknesses."""
     assert (
         calc_balance(fire_water_resistances, fire_water_weaknesses) == 0
-    ), """calc_balance should return zero for a team 
+    ), """calc_balance should return zero for a team
         with equal and opposite resistances and weaknesses."""
     assert (
         calc_balance(fire_water_resistances, zero_weaknesses) > 0
-    ), """calc_balance should return a positive number for a team 
+    ), """calc_balance should return a positive number for a team
         with resistances and no weaknesses."""
     assert calc_balance(all_resistances, zero_weaknesses) > calc_balance(
         fire_water_resistances, zero_weaknesses
-    ), """calc_balance should return higher numbers 
+    ), """calc_balance should return higher numbers
         for teams with more resistances."""
     assert (
         calc_balance(zero_resistances, fire_water_weaknesses) < 0
-    ), """calc_balance should return a negative number 
+    ), """calc_balance should return a negative number
         for a team with weaknesses and no resistances."""
     assert calc_balance(zero_resistances, all_weaknesses) < calc_balance(
         zero_resistances, fire_water_weaknesses
-    ), """calc_balance should return lower numbers 
+    ), """calc_balance should return lower numbers
         for teams with more weaknesses."""
