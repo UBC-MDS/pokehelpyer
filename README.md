@@ -1,3 +1,5 @@
+[![ci-cd](https://github.com/UBC-MDS/pokehelpyer/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/UBC-MDS/pokehelpyer/actions/workflows/ci-cd.yml)
+
 # pokehelpyer
 
 `pokehelpyer` is a Python package designed to assist Pokémon players in building teams of pokémon. Users can provide a list of pokémon currently on their team, and `pokehelpyer` will recommend a suitable pokémon to add to the team based on the current team's overall weaknesses and resistances.
