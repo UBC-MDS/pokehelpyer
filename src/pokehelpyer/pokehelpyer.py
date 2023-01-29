@@ -440,36 +440,36 @@ def calc_balance(resistances, weaknesses):
     try:
         assert isinstance(
             resistances, dict
-        ), r"""Input 1 should be a dictionary of resistance values 
+        ), r"""Input 1 should be a dictionary of resistance values
             of the form {pkmn_type: <int or float>}."""
         assert isinstance(
             weaknesses, dict
-        ), r"""Input 2 should be a dictionary of weakness values 
+        ), r"""Input 2 should be a dictionary of weakness values
             of the form {pkmn_type: <int or float>}."""
         types_set = set(
             pd.read_csv("data/type_chart.csv")["Attacking"].tolist()
         )
         assert (
             set(resistances.keys()) == types_set
-        ), """Input 1 should be a dictionary of resistance values obtained 
-            via `calc_resistances`.\n 
-            There should be one key for each of the 18 pokemon types 
+        ), """Input 1 should be a dictionary of resistance values obtained
+            via `calc_resistances`.\n
+            There should be one key for each of the 18 pokemon types
             (including Fairy)."""
         assert (
             set(weaknesses.keys()) == types_set
-        ), """Input 2 should be a dictionary of weakness values obtained 
-            via `calc_weaknesses`.\n 
-            There should be one key for each of the 18 pokemon types 
+        ), """Input 2 should be a dictionary of weakness values obtained
+            via `calc_weaknesses`.\n
+            There should be one key for each of the 18 pokemon types
             (including Fairy)."""
         assert isinstance(
             resistances["Normal"], (float, int)
-        ), """Input 1 should be a dictionary of resistance values obtained 
-            via `calc_resistances`.\n 
+        ), """Input 1 should be a dictionary of resistance values obtained
+            via `calc_resistances`.\n
             The values should be floats or integers."""
         assert isinstance(
             weaknesses["Normal"], (float, int)
-        ), """Input 2 should be a dictionary of weakness values obtained 
-            via `calc_weaknesses`.\n 
+        ), """Input 2 should be a dictionary of weakness values obtained
+            via `calc_weaknesses`.\n
             The values should be floats or integers."""
     except AssertionError as ex:
         print(f"Invalid input: {ex}")
