@@ -41,7 +41,7 @@ def get_types(pokemon_names):
         print(f"Invalid input: {ex}")
         return None
 
-    # Read file with Pokemon names and types, 
+    # Read file with Pokemon names and types,
     # and keep only relevant subset of the data
     names_types_df = pd.read_csv("data/pokemon.csv")[
         ["Name", "Type 1", "Type 2"]
@@ -103,11 +103,12 @@ def calc_resistances(team_types):
 
     Examples
     --------
-    >>> calc_resistances([['Electric'], ['Normal'], 
+    >>> calc_resistances([['Electric'], ['Normal'],
                           ['Fire', 'Flying']])
     {'Normal': 0, 'Fire': 1, 'Water': 0, 'Grass': 2, 'Electric': 1, ...}
 
-    >>> calc_resistances([['Steel', 'Flying']]) # Skarmory is doubly resistant to Grass
+    >>> calc_resistances([['Steel', 'Flying']])
+        # Skarmory is doubly resistant to Grass
     {'Normal': 1, 'Fire': 0, 'Water': 0, 'Grass': 2, 'Electric': 0, ...}
 
     """
@@ -132,7 +133,8 @@ def calc_resistances(team_types):
         print(f"Invalid input: {ex}")
         return None
 
-    # Loads the file with Pokemon types, strengths and weaknesses into a data frame
+    # Loads the file with Pokemon types,
+    # strengths and weaknesses into a data frame
     resistances_df = pd.read_csv("data/type_chart.csv", index_col=0)
 
     # Creating dictionary with all Pokemon types
@@ -208,7 +210,7 @@ def calc_weaknesses(team_types):
         ), f'{"Input should be a list of lists pokemon types."}'
         assert (
             len(team_types[0]) > 0
-        ), f'{"Input should be a non-empty list of non-empty lists of pokemon types."}'
+        ), f'{"Input should be list of non-empty lists of pokemon types."}'
         assert isinstance(
             team_types[0][0], str
         ), f'{"Input should be a list of lists pokemon types."}'
@@ -421,7 +423,7 @@ def calc_balance(resistances, weaknesses):
 
     Examples
     --------
-    >>> bad_team = ['Abomasnow', 'Ferrothorn', 'Parasect'] 
+    >>> bad_team = ['Abomasnow', 'Ferrothorn', 'Parasect']
         # All are doubly weak to fire
     >>> resistances = calc_resistances(get_types(bad_team))
     >>> weaknesses = calc_weaknesses(get_types(bad_team))
