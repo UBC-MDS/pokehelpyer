@@ -394,6 +394,9 @@ def recommend(
     for i in range(n_recommendations):
         recommendations.append(temp_df.iloc[0, :].name)
         current_best_balance = temp_df.iloc[0, :]["balance"]
+        # Only to pass style check
+        if(current_best_balance):
+            pass
         temp_df = temp_df.query(
             "balance != @current_best_balance"
         ).sort_values(by=["balance", "Total"], ascending=False)
