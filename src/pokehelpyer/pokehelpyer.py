@@ -391,7 +391,7 @@ def recommend(
     recommendations = []
     for i in range(n_recommendations):
         recommendations.append(temp_df.iloc[0, :].name)
-        # current_best_balance = temp_df.iloc[0, :]["balance"]
+        current_best_balance = temp_df.iloc[0, :]["balance"]
         temp_df = temp_df.query(
             "balance != @current_best_balance"
         ).sort_values(by=["balance", "Total"], ascending=False)
