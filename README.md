@@ -66,6 +66,8 @@ pip install pokehelpyer
 
 ## Usage
 
+See https://pokehelpyer.readthedocs.io/en/latest/
+
 ```python
 import pokehelpyer.pokehelpyer as pk
 ```
