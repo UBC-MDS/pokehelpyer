@@ -41,14 +41,14 @@ def get_types(pokemon_names):
         print(f"Invalid input: {ex}")
         return None
 
-
-    # Read file with Pokemon names and types, 
+    # Read file with Pokemon names and types,
     # and keep only relevant subset of the data
-    url = "https://raw.githubusercontent.com/" + \
-    "UBC-MDS/pokehelpyer/main/data/pokemon.csv"
-    
-    names_types_df = pd.read_csv(url)[["Name", "Type 1", "Type 2"]]
+    url = (
+        "https://raw.githubusercontent.com/"
+        + "UBC-MDS/pokehelpyer/main/data/pokemon.csv"
+    )
 
+    names_types_df = pd.read_csv(url)[["Name", "Type 1", "Type 2"]]
 
     # Clean string column "Name"
     names_types_df["Name"] = names_types_df["Name"].str.strip()
@@ -136,11 +136,12 @@ def calc_resistances(team_types):
         print(f"Invalid input: {ex}")
         return None
 
-
     # Loads the file with Pokemon types,
     # strengths and weaknesses into a data frame
-    url = "https://raw.githubusercontent.com/" + \
-        "UBC-MDS/pokehelpyer/main/data/type_chart.csv"
+    url = (
+        "https://raw.githubusercontent.com/"
+        + "UBC-MDS/pokehelpyer/main/data/type_chart.csv"
+    )
     resistances_df = pd.read_csv(url, index_col=0)
 
     # Creating dictionary with all Pokemon types
@@ -225,8 +226,10 @@ def calc_weaknesses(team_types):
         return None
 
     # Read the pokemon weakness dataframe using pandas
-    url = "https://raw.githubusercontent.com/" + \
-        "UBC-MDS/pokehelpyer/main/data/type_chart.csv"
+    url = (
+        "https://raw.githubusercontent.com/"
+        + "UBC-MDS/pokehelpyer/main/data/type_chart.csv"
+    )
     weakness_df = pd.read_csv(url, index_col=0)
 
     # Fetch all types of pokemon
@@ -333,8 +336,10 @@ def recommend(
         print(f"Invalid input: {ex}")
         return None
 
-    url = "https://raw.githubusercontent.com/" + \
-        "UBC-MDS/pokehelpyer/main/data/pokemon.csv"
+    url = (
+        "https://raw.githubusercontent.com/"
+        + "UBC-MDS/pokehelpyer/main/data/pokemon.csv"
+    )
     pokemon_df = pd.read_csv(url)
     if not include_legendaries:
         pokemon_df = pokemon_df.query("Legendary == False")
@@ -405,7 +410,7 @@ def recommend(
         recommendations.append(temp_df.iloc[0, :].name)
         current_best_balance = temp_df.iloc[0, :]["balance"]
         # Only to pass style check
-        if (current_best_balance):
+        if current_best_balance:
             pass
         temp_df = temp_df.query(
             "balance != @current_best_balance"
