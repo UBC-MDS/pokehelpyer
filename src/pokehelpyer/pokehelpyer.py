@@ -43,7 +43,7 @@ def get_types(pokemon_names):
 
 
     # Read file with Pokemon names and types, and keep only relevant subset of the data
-    url = "https://gist.githubusercontent.com/armgilles/194bcff35001e7eb53a2a8b441e8b2c6/raw/92200bc0a673d5ce2110aaad4544ed6c4010f687/pokemon.csv"
+    url = "https://raw.githubusercontent.com/UBC-MDS/pokehelpyer/main/data/pokemon.csv"
     
     names_types_df = pd.read_csv(url)[["Name", "Type 1", "Type 2"]]
 
@@ -137,7 +137,8 @@ def calc_resistances(team_types):
 
     # Loads the file with Pokemon types,
     # strengths and weaknesses into a data frame
-    resistances_df = pd.read_csv("data/type_chart.csv", index_col=0)
+    url = "https://raw.githubusercontent.com/UBC-MDS/pokehelpyer/main/data/type_chart.csv"
+    resistances_df = pd.read_csv(url, index_col=0)
 
     # Creating dictionary with all Pokemon types
     all_types = resistances_df.index.tolist()
@@ -221,7 +222,8 @@ def calc_weaknesses(team_types):
         return None
 
     # Read the pokemon weakness dataframe using pandas
-    weakness_df = pd.read_csv("data/type_chart.csv", index_col=0)
+    url = "https://raw.githubusercontent.com/UBC-MDS/pokehelpyer/main/data/type_chart.csv"
+    weakness_df = pd.read_csv(url, index_col=0)
 
     # Fetch all types of pokemon
     all_types = weakness_df.index.tolist()
@@ -327,7 +329,8 @@ def recommend(
         print(f"Invalid input: {ex}")
         return None
 
-    pokemon_df = pd.read_csv("data/pokemon.csv")
+    url = "https://raw.githubusercontent.com/UBC-MDS/pokehelpyer/main/data/pokemon.csv"
+    pokemon_df = pd.read_csv(url)
     if not include_legendaries:
         pokemon_df = pokemon_df.query("Legendary == False")
     if not include_megas:
