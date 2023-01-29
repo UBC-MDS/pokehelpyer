@@ -31,7 +31,8 @@ def test_get_types():
 
 
 def test_calc_weaknesses_valid_result():
-    """Tests the calculate weaknesses function for valid output/positive testcase"""
+    """Tests the calculate weaknesses function for
+        valid output/positive testcase"""
     input_list = [["Fire"], ["Steel", "Flying"], ["Grass", "Ice"]]
     actual_dict = calc_weaknesses(input_list)
     expected_dict = {
@@ -87,9 +88,9 @@ def test_calc_weaknesses_invalid_result():
 def test_calc_weaknesses_invalid_input():
     """Tests the calculate weaknesses function for empty inputs"""
     actual_val = calc_weaknesses([])
-    assert actual_val == None
+    assert actual_val is None
     actual_val = calc_weaknesses([[], []])
-    assert actual_val == None
+    assert actual_val is None
 
 
 # calc_resistances:
@@ -106,7 +107,8 @@ def test_calc_resistances():
     assert (
         sum(calc_resistances([["Dark", "Fairy"]]).values())
         == 3 + 3 + 2 + 1
-    ), "Combination of immunity, double resistance or single resistance not being calculated properly"
+    ), """Combination of immunity, double resistance or 
+        single resistance not being calculated properly"""
 
 
 # recommend:
@@ -116,7 +118,7 @@ def test_recommend():
     """Test `recommend` returns the correct type of output."""
     actual = recommend(
         ["Pikachu", "Charizard"], n_recommendations=1, early_stop=False
-    )  #  Do a full run for one test. Early stop for the rest.
+    )  # Do a full run for one test. Early stop for the rest.
     assert isinstance(
         actual, str
     ), "recommend with n_recommendations=1 should return a string."
@@ -135,7 +137,8 @@ def test_recommend():
         len(actual) == n
     ), "recommend with n_recommendations > 1 should return a list of strings with length equal to n_recommendations."
 
-    """Test `recommend` deals with errorneous user input in the case of a team with only one pokémon."""
+    """Test `recommend` deals with errorneous user input 
+        in the case of a team with only one pokémon."""
     actual = recommend("Pikachu", early_stop=True)
     expected = recommend(["Pikachu"], early_stop=True)
     assert actual == expected
@@ -224,19 +227,25 @@ def test_calc_balance():
     """Test `calc_balance` returns reasonable values."""
     assert (
         calc_balance(zero_resistances, zero_weaknesses) == 0
-    ), "calc_balance should return zero for a team with no resistances nor weaknesses."
+    ), """calc_balance should return zero for a team 
+        with no resistances nor weaknesses."""
     assert (
         calc_balance(fire_water_resistances, fire_water_weaknesses) == 0
-    ), "calc_balance should return zero for a team with equal and opposite resistances and weaknesses."
+    ), """calc_balance should return zero for a team 
+        with equal and opposite resistances and weaknesses."""
     assert (
         calc_balance(fire_water_resistances, zero_weaknesses) > 0
-    ), "calc_balance should return a positive number for a team with resistances and no weaknesses."
+    ), """calc_balance should return a positive number for a team 
+        with resistances and no weaknesses."""
     assert calc_balance(all_resistances, zero_weaknesses) > calc_balance(
         fire_water_resistances, zero_weaknesses
-    ), "calc_balance should return higher numbers for teams with more resistances."
+    ), """calc_balance should return higher numbers 
+        for teams with more resistances."""
     assert (
         calc_balance(zero_resistances, fire_water_weaknesses) < 0
-    ), "calc_balance should return a negative number for a team with weaknesses and no resistances."
+    ), """calc_balance should return a negative number 
+        for a team with weaknesses and no resistances."""
     assert calc_balance(zero_resistances, all_weaknesses) < calc_balance(
         zero_resistances, fire_water_weaknesses
-    ), "calc_balance should return lower numbers for teams with more weaknesses."
+    ), """calc_balance should return lower numbers 
+        for teams with more weaknesses."""
