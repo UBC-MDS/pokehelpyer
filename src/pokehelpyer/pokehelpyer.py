@@ -464,8 +464,12 @@ def calc_balance(resistances, weaknesses):
             weaknesses, dict
         ), r"""Input 2 should be a dictionary of weakness values
             of the form {pkmn_type: <int or float>}."""
+        url = (
+            "https://raw.githubusercontent.com/"
+            + "UBC-MDS/pokehelpyer/main/data/type_chart.csv"
+        )
         types_set = set(
-            pd.read_csv("data/type_chart.csv")["Attacking"].tolist()
+            pd.read_csv(url)["Attacking"].tolist()
         )
         assert (
             set(resistances.keys()) == types_set
