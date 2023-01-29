@@ -1,4 +1,4 @@
-[![ci-cd](https://github.com/UBC-MDS/pokehelpyer/actions/workflows/ci-cd.yml/badge.svg?branch=main)](https://github.com/UBC-MDS/pokehelpyer/actions/workflows/ci-cd.yml)
+[![ci-cd](https://github.com/UBC-MDS/pokehelpyer/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/UBC-MDS/pokehelpyer/actions/workflows/ci-cd.yml)
 
 # pokehelpyer
 
