@@ -1,6 +1,7 @@
 import pandas as pd
 import re
 
+
 def get_types(pokemon_names):
     """
     Given a list of pokémon names, determine the types of
@@ -40,7 +41,8 @@ def get_types(pokemon_names):
         print(f"Invalid input: {ex}")
         return None
 
-    # Read file with Pokemon names and types, and keep only relevant subset of the data
+    # Read file with Pokemon names and types, 
+    # and keep only relevant subset of the data
     names_types_df = pd.read_csv("data/pokemon.csv")[
         ["Name", "Type 1", "Type 2"]
     ]
@@ -101,7 +103,8 @@ def calc_resistances(team_types):
 
     Examples
     --------
-    >>> calc_resistances([['Electric'], ['Normal'], ['Fire', 'Flying']])
+    >>> calc_resistances([['Electric'], ['Normal'], 
+                          ['Fire', 'Flying']])
     {'Normal': 0, 'Fire': 1, 'Water': 0, 'Grass': 2, 'Electric': 1, ...}
 
     >>> calc_resistances([['Steel', 'Flying']]) # Skarmory is doubly resistant to Grass
@@ -121,7 +124,7 @@ def calc_resistances(team_types):
         ), f'{"Input should be a list of lists pokemon types."}'
         assert (
             len(team_types[0]) > 0
-        ), f'{"Input should be a non-empty list of non-empty lists of pokemon types."}'
+        ), f'{"Input should be a list of non-empty lists of pokemon types."}'
         assert isinstance(
             team_types[0][0], str
         ), f'{"Input should be a list of lists pokemon types."}'
@@ -388,7 +391,7 @@ def recommend(
     recommendations = []
     for i in range(n_recommendations):
         recommendations.append(temp_df.iloc[0, :].name)
-        current_best_balance = temp_df.iloc[0, :]["balance"]
+        # current_best_balance = temp_df.iloc[0, :]["balance"]
         temp_df = temp_df.query(
             "balance != @current_best_balance"
         ).sort_values(by=["balance", "Total"], ascending=False)
@@ -418,7 +421,8 @@ def calc_balance(resistances, weaknesses):
 
     Examples
     --------
-    >>> bad_team = ['Abomasnow', 'Ferrothorn', 'Parasect'] # All are doubly weak to fire
+    >>> bad_team = ['Abomasnow', 'Ferrothorn', 'Parasect'] 
+        # All are doubly weak to fire
     >>> resistances = calc_resistances(get_types(bad_team))
     >>> weaknesses = calc_weaknesses(get_types(bad_team))
     >>> calc_balance(resistances, weaknesses)
