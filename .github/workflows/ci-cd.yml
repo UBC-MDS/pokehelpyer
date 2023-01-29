@@ -33,6 +33,12 @@ jobs:
 
       - name: Build documentation
         run: poetry run make html --directory docs/
+        
+      - name: Check style
+        run: poetry run flake8 --exclude=docs*
+        
+      - name: Test with pytest
+        run: poetry run pytest 
 
   cd:
     # Only run this job if the "ci" job passes
