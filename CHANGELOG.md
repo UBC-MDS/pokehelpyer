@@ -2,6 +2,9 @@
 
 <!--next-version-placeholder-->
 
+## v0.1.1 (2023-01-29)
+
+
 ## v0.1.0 (2023-01-29)
 ### Feature
 * Add input checks to calc_balance ([`9c67136`](https://github.com/UBC-MDS/pokehelpyer/commit/9c67136e69745b5d600b0ecdd299560fbaacc089))
