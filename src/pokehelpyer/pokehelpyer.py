@@ -1,7 +1,5 @@
 import pandas as pd
-import itertools
 import re
-
 
 def get_types(pokemon_names):
     """
@@ -31,13 +29,13 @@ def get_types(pokemon_names):
     try:
         assert isinstance(
             pokemon_names, list
-        ), f"Input should be a list of pokemon names."
+        ), f'{"Input should be a list of pokemon names."}'
         assert (
             len(pokemon_names) > 0
-        ), "Input should be a non-empty list of pokemon names."
+        ), f'{"Input should be a non-empty list of pokemon names."}'
         assert isinstance(
             pokemon_names[0], str
-        ), f"Input should be a list of pokemon names."
+        ), f'{"Input should be a list of pokemon names."}'
     except AssertionError as ex:
         print(f"Invalid input: {ex}")
         return None
@@ -67,7 +65,7 @@ def get_types(pokemon_names):
         # Check if exists in data
         assert (
             name in names_types_df["Name"].tolist()
-        ), f"{name} is not a valid pokémon."
+        ), f'{"{name} is not a valid pokémon."}'
 
         # Find the row with match
         row = names_types_df.loc[names_types_df["Name"] == name].values[0]
@@ -114,19 +112,19 @@ def calc_resistances(team_types):
     try:
         assert isinstance(
             team_types, list
-        ), f"Input should be a list of lists of pokemon types."
+        ), f'{"Input should be a list of lists of pokemon types."}'
         assert (
             len(team_types) > 0
-        ), "Input should be a non-empty list of lists of pokemon types."
+        ), f'{"Input should be a non-empty list of lists of pokemon types."}'
         assert isinstance(
             team_types[0], list
-        ), f"Input should be a list of lists pokemon types."
+        ), f'{"Input should be a list of lists pokemon types."}'
         assert (
             len(team_types[0]) > 0
-        ), f"Input should be a non-empty list of non-empty lists of pokemon types."
+        ), f'{"Input should be a non-empty list of non-empty lists of pokemon types."}'
         assert isinstance(
             team_types[0][0], str
-        ), f"Input should be a list of lists pokemon types."
+        ), f'{"Input should be a list of lists pokemon types."}'
     except AssertionError as ex:
         print(f"Invalid input: {ex}")
         return None
@@ -198,19 +196,19 @@ def calc_weaknesses(team_types):
     try:
         assert isinstance(
             team_types, list
-        ), f"Input should be a list of lists of pokemon types."
+        ), f'{"Input should be a list of lists of pokemon types."}'
         assert (
             len(team_types) > 0
-        ), "Input should be a non-empty list of lists of pokemon types."
+        ), f'{"Input should be a non-empty list of lists of pokemon types."}'
         assert isinstance(
             team_types[0], list
-        ), f"Input should be a list of lists pokemon types."
+        ), f'{"Input should be a list of lists pokemon types."}'
         assert (
             len(team_types[0]) > 0
-        ), f"Input should be a non-empty list of non-empty lists of pokemon types."
+        ), f'{"Input should be a non-empty list of non-empty lists of pokemon types."}'
         assert isinstance(
             team_types[0][0], str
-        ), f"Input should be a list of lists pokemon types."
+        ), f'{"Input should be a list of lists pokemon types."}'
     except AssertionError as ex:
         print(f"Invalid input: {ex}")
         return None
@@ -305,19 +303,19 @@ def recommend(
     try:
         assert isinstance(
             current_team, list
-        ), f"current_team should be a list of pokemon names."
+        ), f'{"current_team should be a list of pokemon names."}'
         assert (
             len(current_team) > 0
-        ), "current_team should be a non-empty list of pokemon names."
+        ), f'{"current_team should be a non-empty list of pokemon names."}'
         assert (
             len(current_team) < 6
-        ), "current_team should have less than six pokemon names."
+        ), f'{"current_team should have less than six pokemon names."}'
         assert isinstance(
             current_team[0], str
-        ), f"current_team should be a list of pokemon names."
+        ), f'{"current_team should be a list of pokemon names."}'
         assert isinstance(
             n_recommendations, int
-        ), f"n_recommendations should be an integer."
+        ), f'{"n_recommendations should be an integer."}'
     except AssertionError as ex:
         print(f"Invalid input: {ex}")
         return None
